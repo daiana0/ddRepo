@@ -101,17 +101,11 @@ const ProductosAdmin = () => {
       idAdministrador: product.idAdministrador,
     });
 
-    // Mostrar imágenes actuales (convertimos el string JSON a array)
-    if (product.imagenes) {
-      try {
-        const imagenArray = JSON.parse(product.imagenes); // <- parseamos
-        setImagePreviews(
-          imagenArray.map((img) => `http://localhost:3000/uploads/${img}`)
-        );
-      } catch (error) {
-        console.error("Error parsing imagenes:", error);
-        setImagePreviews([]);
-      }
+    // Mostrar imágenes actuales
+    if (product.imagenes && Array.isArray(product.imagenes) && product.imagenes.length > 0) {
+      setImagePreviews(
+        product.imagenes.map((img) => `http://localhost:3000/uploads/${img}`)
+      );
     } else {
       setImagePreviews([]);
     }
