@@ -101,10 +101,29 @@ const ProductosAdmin = () => {
       idAdministrador: product.idAdministrador,
     });
 
-    // Mostrar imágenes actuales
-    if (product.imagenes && Array.isArray(product.imagenes) && product.imagenes.length > 0) {
+    // Debug: ver qué tipo de dato es imagenes
+    console.log('product.imagenes:', product.imagenes);
+    console.log('typeof product.imagenes:', typeof product.imagenes);
+    console.log('Array.isArray(product.imagenes):', Array.isArray(product.imagenes));
+
+    // Normalizar imagenes - puede venir como string o array
+    let imagenesArray = [];
+    if (product.imagenes) {
+      if (typeof product.imagenes === 'string') {
+        try {
+          imagenesArray = JSON.parse(product.imagenes);
+        } catch (e) {
+          console.error('Error parsing imagenes:', e);
+          imagenesArray = [];
+        }
+      } else if (Array.isArray(product.imagenes)) {
+        imagenesArray = product.imagenes;
+      }
+    }
+
+    if (imagenesArray.length > 0) {
       setImagePreviews(
-        product.imagenes.map((img) => `http://localhost:3000/uploads/${img}`)
+        imagenesArray.map((img) => `http://localhost:3000/uploads/${img}`)
       );
     } else {
       setImagePreviews([]);
