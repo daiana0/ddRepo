@@ -31,8 +31,38 @@ const Producto = sequelize.define(
     imagenes: {
       type: DataTypes.JSON,
       allowNull: true,
-      // Valor por defecto: array vacío
       defaultValue: [],
+      get() {
+        const rawValue = this.getDataValue('imagenes');
+        // Si es string, parsearlo
+        if (typeof rawValue === 'string') {
+          try {
+            return JSON.parse(rawValue);
+          } catch (e) {
+            return [];
+          }
+        }
+        // Si es array, devolverlo tal cual
+        if (Array.isArray(rawValue)) {
+          return rawValue;
+        }
+        // Si es null o undefined, devolver array vacío
+        return [];
+      },
+      set(value) {
+        // Asegurar que siempre se guarde como array
+        if (Array.isArray(value)) {
+          this.setDataValue('imagenes', value);
+        } else if (typeof value === 'string') {
+          try {
+            this.setDataValue('imagenes', JSON.parse(value));
+          } catch (e) {
+            this.setDataValue('imagenes', []);
+          }
+        } else {
+          this.setDataValue('imagenes', []);
+        }
+      }
     },
     oferta: {
       type: DataTypes.BOOLEAN,

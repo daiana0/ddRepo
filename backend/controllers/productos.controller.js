@@ -87,7 +87,7 @@ const createProducto = async (req, res) => {
       idCategoria,
     } = req.body;
 
-    // Obtener nombres de los archivos subidos y guardarlos como JSON
+    // Obtener nombres de los archivos subidos como array
     const imagenes = req.files ? req.files.map(f => f.filename) : [];
 
     const nuevoProducto = await Producto.create({
@@ -95,7 +95,7 @@ const createProducto = async (req, res) => {
       precio,
       descripcion,
       stock,
-      imagenes: JSON.stringify(imagenes), // Guardamos como string
+      imagenes: imagenes,
       oferta,
       descuento,
       idAdministrador,
@@ -153,15 +153,14 @@ const updateProducto = async (req, res) => {
     // Si se suben nuevas imágenes
     if (req.files && req.files.length > 0) {
       // Eliminar imágenes antiguas si existen
-      if (producto.imagenes) {
-        const oldImages = JSON.parse(producto.imagenes);
-        oldImages.forEach(img => {
+      if (producto.imagenes && Array.isArray(producto.imagenes) && producto.imagenes.length > 0) {
+        producto.imagenes.forEach(img => {
           const oldImagePath = path.join(__dirname, '../uploads', img);
           if (fs.existsSync(oldImagePath)) fs.unlinkSync(oldImagePath);
         });
       }
 
-      updateData.imagenes = JSON.stringify(req.files.map(f => f.filename));
+      updateData.imagenes = req.files.map(f => f.filename);
     }
 
     await producto.update(updateData);
@@ -199,9 +198,8 @@ const deleteProducto = async (req, res) => {
       return res.status(404).json({ success: false, error: "Producto no encontrado" });
     }
 
-    if (producto.imagenes) {
-      const images = JSON.parse(producto.imagenes);
-      images.forEach((img) => {
+    if (producto.imagenes && Array.isArray(producto.imagenes) && producto.imagenes.length > 0) {
+      producto.imagenes.forEach((img) => {
         const imagePath = path.join(__dirname, "../uploads", img);
         if (fs.existsSync(imagePath)) fs.unlinkSync(imagePath);
       });

@@ -47,13 +47,39 @@ const ProductoDetalle = () => {
   }, [id]);
 
   useEffect(() => {
-    if (producto?.imagen) {
-      // Por ahora solo una imagen, pero preparado para múltiples
-      setImages([`http://localhost:3000/uploads/${producto.imagen}`]);
-    } else {
-      setImages(['https://via.placeholder.com/500x400?text=Sin+Imagen']);
+  if (!producto) return;
+
+  let imagenes = [];
+
+  try {
+    // ✅ Si 'imagenes' es un string tipo '["img1.jpg"]', lo parseamos
+    if (typeof producto.imagenes === "string") {
+      imagenes = JSON.parse(producto.imagenes);
     }
-  }, [producto]);
+    // ✅ Si ya es array, lo usamos directamente
+    else if (Array.isArray(producto.imagenes)) {
+      imagenes = producto.imagenes;
+    }
+    // ✅ Compatibilidad con productos antiguos que usaban 'imagen' única
+    else if (producto.imagen) {
+      imagenes = [producto.imagen];
+    }
+  } catch (error) {
+    console.warn("Error parseando imágenes:", error);
+  }
+
+  // ✅ Si no hay imágenes, usar un placeholder seguro (URL válida)
+  if (imagenes.length > 0) {
+    setImages(imagenes.map((img) =>
+      img.startsWith("http")
+        ? img
+        : `http://localhost:3000/uploads/${img}`
+    ));
+  } else {
+    setImages(["https://placehold.co/500x400?text=Sin+Imagen"]);
+  }
+}, [producto]);
+
 
   useEffect(() => {
     axios
@@ -264,49 +290,81 @@ const ProductoDetalle = () => {
               </Typography>
 
               {/* Controles de cantidad y carrito */}
-              <Paper sx={{ p: 2, mb: 3, backgroundColor: '#f5f5f5' }}>
-                <Typography variant="h6" gutterBottom>
-                  Cantidad
-                </Typography>
-                
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <IconButton 
-                    onClick={() => handleQuantityChange('decrement')}
-                    disabled={quantity === 0}
-                    color="primary"
-                    sx={{ 
-                      border: '1px solid',
-                      borderColor: 'primary.main',
-                      '&:disabled': { borderColor: 'grey.300' }
-                    }}
-                  >
-                    <RemoveIcon />
-                  </IconButton>
-                  
-                  <Typography variant="h6" sx={{ minWidth: 40, textAlign: 'center' }}>
-                    {quantity}
-                  </Typography>
-                  
-                  <IconButton 
-                    onClick={() => handleQuantityChange('increment')}
-                    color="primary"
-                    disabled={quantity >= (producto?.stock || 0)}
-                    sx={{ 
-                      border: '1px solid',
-                      borderColor: 'primary.main',
-                      '&:disabled': { borderColor: 'grey.300' }
-                    }}
-                  >
-                    <AddIcon />
-                  </IconButton>
-                </Box>
+<Paper 
+  sx={{ 
+    p: 1, 
+    mb: 1, 
+    borderRadius: 2, 
+    boxShadow: 3 
+  }}
+>
+    <Box 
+    sx={{ 
+      display: 'flex', 
+      alignItems: 'center', 
+      gap: 1, 
+      m: 1,
+      justifyContent: 'center'
+    }}
+  >
+    <IconButton 
+      onClick={() => handleQuantityChange('decrement')}
+      disabled={quantity === 0}
+      color="primary"
+      sx={{ 
+        border: '1px solid',
+        borderColor: 'primary.main',
+        borderRadius: 1,
+        '&:hover': { backgroundColor: 'primary.light' },
+        '&:disabled': { borderColor: 'grey.300', color: 'grey.400' },
+        width: 40,
+        height: 40
+      }}
+    >
+      <RemoveIcon />
+    </IconButton>
+    
+    <Typography 
+      variant="h6" 
+      sx={{ 
+        minWidth: 40, 
+        textAlign: 'center', 
+        fontWeight: 'bold' 
+      }}
+    >
+      {quantity}
+    </Typography>
+    
+    <IconButton 
+      onClick={() => handleQuantityChange('increment')}
+      color="primary"
+      disabled={quantity >= (producto?.stock || 0)}
+      sx={{ 
+        border: '1px solid',
+        borderColor: 'primary.main',
+        borderRadius: 1,
+        '&:hover': { backgroundColor: 'primary.light' },
+        '&:disabled': { borderColor: 'grey.300', color: 'grey.400' },
+        width: 40,
+        height: 40
+      }}
+    >
+      <AddIcon />
+    </IconButton>
+  </Box>
 
-                {quantity > 0 && (
-                  <Typography variant="body2" color="success.main" fontWeight="bold">
-                    Subtotal: ${(precioFinal * quantity).toFixed(2)}
-                  </Typography>
-                )}
-              </Paper>
+  {quantity > 0 && (
+    <Typography 
+      variant="body1" 
+      color="success.main" 
+      fontWeight="bold" 
+      textAlign="center"
+    >
+      Subtotal: ${(precioFinal * quantity).toFixed(2)}
+    </Typography>
+  )}
+</Paper>
+
 
               {/* Botón principal de carrito */}
               <Button 

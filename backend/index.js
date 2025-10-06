@@ -12,7 +12,11 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  })
+);
 
 app.use(
   cors({
@@ -23,6 +27,10 @@ app.use(
     credentials: true,
   })
 );
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+  next();
+});
 
 app.use(morgan(process.env.NODE_ENV === "development" ? "dev" : "combined"));
 

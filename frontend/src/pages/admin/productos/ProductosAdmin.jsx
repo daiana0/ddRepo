@@ -87,55 +87,73 @@ const ProductosAdmin = () => {
   };
 
   const handleOpenDialog = (product = null) => {
-  if (product) {
-    setEditingProduct(product);
+    if (product) {
+      setEditingProduct(product);
 
-    setFormData({
-      nombre: product.nombre,
-      precio: product.precio,
-      descripcion: product.descripcion,
-      stock: product.stock,
-      oferta: product.oferta,
-      descuento: product.descuento,
-      idCategoria: product.idCategoria,
-      idAdministrador: product.idAdministrador,
-    });
+      setFormData({
+        nombre: product.nombre,
+        precio: product.precio,
+        descripcion: product.descripcion,
+        stock: product.stock,
+        oferta: product.oferta,
+        descuento: product.descuento,
+        idCategoria: product.idCategoria,
+        idAdministrador: product.idAdministrador,
+      });
 
-    // Mostrar imágenes actuales (convertimos el string JSON a array)
-    if (product.imagenes) {
-      try {
-        const imagenArray = JSON.parse(product.imagenes); // <- parseamos
+      // Debug: ver qué tipo de dato es imagenes
+      console.log("product.imagenes:", product.imagenes);
+      console.log("typeof product.imagenes:", typeof product.imagenes);
+      console.log(
+        "Array.isArray(product.imagenes):",
+        Array.isArray(product.imagenes)
+      );
+
+      // Normalizar imagenes - puede venir como string o array
+      let imagenesArray = [];
+      if (product.imagenes) {
+        if (typeof product.imagenes === "string") {
+          try {
+            imagenesArray = JSON.parse(product.imagenes);
+          } catch (e) {
+            console.error("Error parsing imagenes:", e);
+            imagenesArray = [];
+          }
+        } else if (Array.isArray(product.imagenes)) {
+          imagenesArray = product.imagenes;
+        }
+      }
+
+      if (imagenesArray && imagenesArray.length > 0){
         setImagePreviews(
-          imagenArray.map((img) => `http://localhost:3000/uploads/${img}`)
-        );
-      } catch (error) {
-        console.error("Error parsing imagenes:", error);
+          imagenesArray.map((img) => {
+          // si ya es URL completa, usarla; si solo es nombre de archivo, construir URL
+          return img.startsWith('http') ? img : `http://localhost:3000/uploads/${img}`;
+        })
+      );
+      } else {
         setImagePreviews([]);
       }
+
+      // No tocar imageFiles al abrir para edición
+      setImageFiles([]);
     } else {
+      setEditingProduct(null);
+      setFormData({
+        nombre: "",
+        precio: "",
+        descripcion: "",
+        stock: "",
+        oferta: false,
+        descuento: 0,
+        idCategoria: "",
+        idAdministrador: 1,
+      });
+      setImageFiles([]);
       setImagePreviews([]);
     }
-
-    // No tocar imageFiles al abrir para edición
-    setImageFiles([]);
-  } else {
-    setEditingProduct(null);
-    setFormData({
-      nombre: "",
-      precio: "",
-      descripcion: "",
-      stock: "",
-      oferta: false,
-      descuento: 0,
-      idCategoria: "",
-      idAdministrador: 1,
-    });
-    setImageFiles([]);
-    setImagePreviews([]);
-  }
-  setOpenDialog(true);
-};
-
+    setOpenDialog(true);
+  };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
@@ -200,7 +218,9 @@ const ProductosAdmin = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("¿Estás seguro de que quieres eliminar este producto?")) {
+    if (
+      window.confirm("¿Estás seguro de que quieres eliminar este producto?")
+    ) {
       try {
         await axios.delete(`http://localhost:3000/api/productos/${id}`);
         fetchProductos();
@@ -290,7 +310,12 @@ const ProductosAdmin = () => {
       </Box>
 
       {/* Modal */}
-      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>
           {editingProduct ? "Editar Producto" : "Nuevo Producto"}
         </DialogTitle>
