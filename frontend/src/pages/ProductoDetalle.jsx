@@ -15,7 +15,8 @@ import {
   List,
   ListItem,
   ListItemText,
-  Paper
+  Paper,
+  Chip
 } from "@mui/material";
 import {
   Add as AddIcon,
@@ -27,6 +28,7 @@ import { CuponContext } from "../contexts/Cupon.context";
 import { useCart } from "../contexts/Cart.context";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import socketService from "../services/socket.service";
 
 const ProductoDetalle = () => {
   const { id } = useParams();
@@ -38,6 +40,7 @@ const ProductoDetalle = () => {
   const { addToCart, removeFromCart, isInCart, getItemQuantity } = useCart();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [images, setImages] = useState([]);
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     axios
@@ -107,19 +110,37 @@ const ProductoDetalle = () => {
       });
   }, [id]);
 
+  useEffect(() => {
+    const socket = socketService.connect();
+
+    if (socket) {
+      setIsConnected(true);
+      socketService.joinProduct(id);
+
+      socketService.onCommentAdded(({ data }) => {
+        console.log("💬 Nuevo comentario recibido:", data);
+        setMensajes((prev) => [...prev, data]);
+      });
+
+      socketService.onCommentError((error) => {
+        console.error("Error al recibir comentario:", error);
+      });
+    }
+
+    return () => {
+      socketService.leaveProduct(id);
+      socketService.offCommentAdded();
+      socketService.offCommentError();
+      socketService.disconnect();
+      setIsConnected(false);
+    };
+  }, [id]);
+
   const enviarMensaje = () => {
     if (!nuevoMensaje.trim()) return;
 
-    axios
-      .post(`http://localhost:3000/api/productos/${id}/mensajes`, {
-        texto: nuevoMensaje,
-      })
-      .then((res) => {
-        console.log("Mensaje enviado:", res.data);
-        setMensajes([...mensajes, res.data.data]);
-        setNuevoMensaje("");
-      })
-      .catch((err) => console.error("Error enviando mensaje", err));
+    socketService.sendComment(id, nuevoMensaje);
+    setNuevoMensaje("");
   };
 
   if (!producto) return <p>Cargando producto...</p>;
@@ -425,10 +446,17 @@ const ProductoDetalle = () => {
 
         {/* Sección de mensajes */}
         <Box>
-          <Typography variant="h5" gutterBottom fontWeight="bold">
-            Comentarios del producto
-          </Typography>
-          
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+            <Typography variant="h5" gutterBottom fontWeight="bold" sx={{ mb: 0 }}>
+              Comentarios del producto
+            </Typography>
+            <Chip
+              label={isConnected ? "Conectado en tiempo real" : "Desconectado"}
+              color={isConnected ? "success" : "error"}
+              size="small"
+            />
+          </Box>
+
           {/* Formulario para nuevo mensaje */}
           <Paper sx={{ p: 3, mb: 3 }}>
             <Typography variant="h6" gutterBottom>
