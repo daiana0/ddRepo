@@ -33,28 +33,34 @@ const FilterBar = () => {
 
   return (
     <Box
-      sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "left",
-        gap: 1,
-        p: 1,
-        pl: 2,
-        backgroundColor: "info.main",
+        sx={{
+    display: "flex",
+    justifyContent: "center", // centra los botones
+    alignItems: "center",
+    width: "100%",             // 🔹 ocupa el 90% del ancho total
+    mx: "auto",               // 🔹 centra horizontalmente el Box
+    gap: 5,                   // 🔹 separación entre botones
+    backgroundColor: "info.main", // color de fondo
+    py: 1,                    // 🔹 padding vertical para que se vea más alto
+            
+  }}
+>
+  {menuItems.map((item, i) => (
+    <Button
+      key={i}
+      variant="text"
+      color="secondary"
+      sx={{ 
+        minWidth: 80,          // 🔹 botones un poco más anchos
+        fontSize: "1rem",      // 🔹 texto más grande
+        fontWeight: "bold",    // 🔹 texto más visible
       }}
+      component={Link}
+      to={item.path}
     >
-      {menuItems.map((item, i) => (
-        <Button 
-          key={i} 
-          variant="text" 
-          color="secondary" 
-          sx={{ minWidth: 60 }}
-          component={Link}
-          to={item.path}
-        >
-          {item.label}
-        </Button>
-      ))}
+      {item.label}
+    </Button>
+  ))}
 
       <Autocomplete
         options={productos}
