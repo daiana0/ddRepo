@@ -451,7 +451,7 @@ const ProductoDetalle = () => {
               Comentarios del producto
             </Typography>
             <Chip
-              label={isConnected ? "Conectado en tiempo real" : "Desconectado"}
+              label={isConnected ? "  " : ""}
               color={isConnected ? "success" : "error"}
               size="small"
             />

@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const path = require("path");
 const http = require("http");
 const { Server } = require("socket.io");
+const passport = require("./config/passport");
 require("dotenv").config();
 
 const { errorHandler, notFound } = require("./middleware/errorHandler");
@@ -49,7 +50,8 @@ app.use(morgan(process.env.NODE_ENV === "development" ? "dev" : "combined"));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-// Servir archivos estáticos desde la carpeta uploads
+app.use(passport.initialize());
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get("/health", (req, res) => {

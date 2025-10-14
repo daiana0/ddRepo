@@ -29,6 +29,14 @@ const Cliente = sequelize.define(
         type: DataTypes.STRING,
         allowNull: true,
       },
+      googleId: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      authProvider: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       tableName: "clientes",
