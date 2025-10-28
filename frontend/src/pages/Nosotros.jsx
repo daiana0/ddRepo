@@ -8,6 +8,7 @@ import {
   EmojiObjects as IdeaIcon
 } from "@mui/icons-material";
 import Header from "../components/Header";
+import FilterBar from "../components/FilterBar";
 import Footer from "../components/Footer";
 
 const SobreNosotros = () => {
@@ -56,6 +57,7 @@ const SobreNosotros = () => {
   return (
     <>
       <Header />
+      <FilterBar />
       <Box sx={{ backgroundColor: "#f8f9fa", minHeight: "100vh", py: 6 }}>
         <Container maxWidth="lg">
           

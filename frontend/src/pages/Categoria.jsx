@@ -73,6 +73,7 @@ function Categoria() {
   return (
     <>
       <Header />
+      <FilterBar/>
       <Box sx={{ backgroundColor: "#f8f9fa", minHeight: "100vh", py: 6 }}>
         <Container maxWidth="lg">
           
