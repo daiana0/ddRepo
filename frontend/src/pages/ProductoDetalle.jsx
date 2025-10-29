@@ -33,6 +33,8 @@ import { useCart } from "../contexts/Cart.context";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import socketService from "../services/socket.service";
+import { useNavigate } from "react-router-dom";
+
 
 const ProductoDetalle = () => {
   const { id } = useParams();
@@ -114,6 +116,12 @@ const ProductoDetalle = () => {
         setVariantes([]);
       });
   }, [id]);
+  const navigate = useNavigate();
+
+const handleSeguirComprando = () => {
+  navigate("/"); // redirige a la página de inicio
+};
+
 
   // 🔹 Socket de comentarios
   useEffect(() => {
@@ -547,6 +555,20 @@ const ProductoDetalle = () => {
                       Eliminar del carrito
                     </Button>
                   )}
+                  <Button
+    onClick={handleSeguirComprando}
+    variant="outlined"
+    color="primary"
+    size="large"
+    sx={{
+      py: 1.5,
+      maxWidth: 500,
+      width: "100%",
+      mt: 1,
+    }}
+  >
+    Seguir comprando
+  </Button>
                 </Stack>
 
                 {/* Info del carrito */}

@@ -44,6 +44,7 @@ const ProductCard = ({ producto, votos }) => {
       onClick={() => navigate(`/producto/${producto.id}`)}
       sx={{
         cursor: "pointer",
+        borderRadius: "2px",
         width: 300,
         height: 420,
         display: "flex",
@@ -66,7 +67,7 @@ const ProductCard = ({ producto, votos }) => {
             px: 1,
             py: 0.5,
             fontSize: "0.75rem",
-            borderRadius: "4px",
+            borderRadius: "2px",
             zIndex: 1,
           }}
         >
