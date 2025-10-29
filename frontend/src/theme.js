@@ -14,7 +14,7 @@ const theme = createTheme({
     },
 
     text: {
-      primary: "#2E2E2E", // Gris oscuro
+      primary: "#E2E2E", // Gris oscuro
       secondary: "#6A0DAD",
     },
     accent: {
@@ -71,7 +71,7 @@ const theme = createTheme({
           padding: 0,
           width: "100vw",
           minHeight: "100vh",
-          backgroundColor: "#4d5656",
+          backgroundColor: "#d2bde2",
         },
         "#root": {
           width: "100%",

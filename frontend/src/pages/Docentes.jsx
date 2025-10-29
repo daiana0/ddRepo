@@ -107,7 +107,7 @@ const Docentes = () => {
     <>
       <Header />
       <FilterBar/>
-      <Box sx={{ backgroundColor: "#f8f9fa", minHeight: "100vh", py: 6 }}>
+      <Box sx={{ backgroundColor: "#d2bde2", minHeight: "100vh", py: 6 }}>
         <Container maxWidth="lg">
           
           {/* Hero Section */}
@@ -132,7 +132,7 @@ const Docentes = () => {
           </Paper>
 
           {/* Noticias Destacadas */}
-<Box sx={{ mb: 5 }}>
+<Box sx={{ mb: 5 , ml: 10}}>
   <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 3, justifyContent: "center" }}>
     <IdeaIcon color="warning" sx={{ fontSize: 30 }} />
     <Typography variant="h4" fontWeight="bold">
@@ -204,7 +204,7 @@ const Docentes = () => {
 </Box>
 
           {/* Todas las Noticias */}
-          <Box>
+          <Box sx={{ mb: 5 , ml: 10}}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 3 }}>
               <ArticleIcon color="primary" sx={{ fontSize: 30 }} />
               <Typography variant="h4" fontWeight="bold">

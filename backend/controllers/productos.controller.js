@@ -2,16 +2,28 @@ const { Producto, Categoria, Administrador, Variante, Mensaje } = require("../mo
 const { validationResult } = require("express-validator");
 const fs = require("fs");
 const path = require("path");
+const { Op } = require("sequelize"); // 🔄 NUEVO
 
 // Obtener todos los productos
 const getProductos = async (req, res) => {
   try {
-    const { page = 1, limit = 20, idCategoria, oferta = undefined } = req.query;
+    const { page = 1, limit = 20, idCategoria, oferta = undefined, nombre, precioMin, precioMax } = req.query; // 🔄 NUEVO
     const offset = (page - 1) * limit;
 
     const whereClause = {};
     if (idCategoria) whereClause.idCategoria = idCategoria;
     if (oferta !== undefined) whereClause.oferta = oferta === "true";
+
+    // 🔄 NUEVOS FILTROS
+    if (nombre) {
+      whereClause.nombre = { [Op.like]: `%${nombre}%` };
+    }
+
+    if (precioMin || precioMax) {
+      whereClause.precio = {};
+      if (precioMin) whereClause.precio[Op.gte] = parseFloat(precioMin);
+      if (precioMax) whereClause.precio[Op.lte] = parseFloat(precioMax);
+    }
 
     const productos = await Producto.findAndCountAll({
       where: whereClause,
@@ -87,7 +99,6 @@ const createProducto = async (req, res) => {
       idCategoria,
     } = req.body;
 
-    // Obtener nombres de los archivos subidos como array
     const imagenes = req.files ? req.files.map(f => f.filename) : [];
 
     const nuevoProducto = await Producto.create({
@@ -109,15 +120,12 @@ const createProducto = async (req, res) => {
     });
   } catch (err) {
     console.error("Error en createProducto:", err);
-
-    // Si hay error y se subieron archivos, eliminar
     if (req.files) {
       req.files.forEach(file => {
         const filePath = path.join(__dirname, '../uploads', file.filename);
         if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
       });
     }
-
     res.status(500).json({
       success: false,
       error: "Error interno del servidor",
@@ -150,16 +158,13 @@ const updateProducto = async (req, res) => {
 
     const updateData = { ...req.body };
 
-    // Si se suben nuevas imágenes
     if (req.files && req.files.length > 0) {
-      // Eliminar imágenes antiguas si existen
       if (producto.imagenes && Array.isArray(producto.imagenes) && producto.imagenes.length > 0) {
         producto.imagenes.forEach(img => {
           const oldImagePath = path.join(__dirname, '../uploads', img);
           if (fs.existsSync(oldImagePath)) fs.unlinkSync(oldImagePath);
         });
       }
-
       updateData.imagenes = req.files.map(f => f.filename);
     }
 
@@ -172,15 +177,12 @@ const updateProducto = async (req, res) => {
     });
   } catch (err) {
     console.error("Error en updateProducto:", err);
-
-    // Si hay error y se subieron archivos, eliminar
     if (req.files) {
       req.files.forEach(file => {
         const filePath = path.join(__dirname, '../uploads', file.filename);
         if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
       });
     }
-
     res.status(500).json({
       success: false,
       error: "Error interno del servidor",
@@ -221,3 +223,4 @@ module.exports = {
   updateProducto,
   deleteProducto,
 };
+

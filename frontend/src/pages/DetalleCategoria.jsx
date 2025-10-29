@@ -81,7 +81,7 @@ function DetalleCategoria() {
     <>
       <Header />
       <FilterBar />
-      <Box sx={{ backgroundColor: "#f8f9fa", minHeight: "100vh", py: 6 }}>
+      <Box sx={{ backgroundColor: "#d2bde2", minHeight: "100vh", py: 6 }}>
         <Container maxWidth="lg">
 
           <Paper

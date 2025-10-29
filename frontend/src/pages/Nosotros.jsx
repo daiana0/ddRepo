@@ -58,7 +58,7 @@ const SobreNosotros = () => {
     <>
       <Header />
       <FilterBar />
-      <Box sx={{ backgroundColor: "#f8f9fa", minHeight: "100vh", py: 6 }}>
+      <Box sx={{ backgroundColor: "#d2bde2", minHeight: "100vh", py: 6 }}>
         <Container maxWidth="lg">
           
           {/* Hero Section */}
@@ -147,7 +147,6 @@ const SobreNosotros = () => {
           elevation={0}
           sx={{ 
             p: 3,
-            border: "2px solid #e0e0e0",
             borderRadius: 2,
             width: "800px",
             height: "100%",
@@ -172,29 +171,7 @@ const SobreNosotros = () => {
   </Grid>
 </Box>
 
-          {/* Call to Action */}
-          <Paper 
-            elevation={3} 
-            sx={{ 
-              p: 5, 
-              mt: 4, 
-              borderRadius: 3, 
-              textAlign: "center",
-              background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-              color: "white"
-            }}
-          >
-            <Typography variant="h4" fontWeight="bold" gutterBottom>
-              ¿Listo para comenzar tu proyecto?
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 3, opacity: 0.95 }}>
-              Contáctanos y descubre cómo podemos ayudarte con tus necesidades educativas y creativas.
-            </Typography>
-            <Typography variant="h6" fontWeight="medium">
-              ¡Estamos aquí para hacer realidad tus ideas!
-            </Typography>
-          </Paper>
-
+          
         </Container>
       </Box>
       <Footer />

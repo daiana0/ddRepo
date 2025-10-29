@@ -13,9 +13,9 @@ function Cupon() {
   } = useContext(CuponContext);
 
   return (
-    <Box sx={{ m: 2, p: 1, backgroundColor: "#FF6EC7" }}>
+    <Box sx={{  p: 1, backgroundColor: "#6A0DAD"  }}>
       <Input
-        sx={{ m: 1, backgroundColor: "white" }}
+        sx={{ m: 1, pl: 2, backgroundColor: "white" }}
         type="text"
         placeholder="Ingrese cupón"
         value={codigoIngresado}

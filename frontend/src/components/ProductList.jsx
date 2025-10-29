@@ -5,26 +5,37 @@ import Box from '@mui/material/Box';
 import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
 
-const ProductList = () => {
+const ProductList = ({ filters }) => {
   const [productos, setProductos] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get(`http://localhost:3000/api/productos?page=${page}&limit=12`)
-      .then((response) => {
+    const fetchProductos = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get('http://localhost:3000/api/productos', {
+          params: {
+            page,
+            limit: 12,
+            nombre: filters.nombre || undefined,
+            precioMin: filters.precioMin || undefined,
+            precioMax: filters.precioMax || undefined,
+            idCategoria: filters.idCategoria || undefined
+          }
+        });
         setProductos(response.data.data);
         setTotalPages(response.data.pagination.totalPages);
-        setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error('Error al obtener productos:', error);
+      } finally {
         setLoading(false);
-      });
-  }, [page]);
+      }
+    };
+
+    fetchProductos();
+  }, [page, filters]); // 🔥 Cada vez que cambian los filtros o la página
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -37,12 +48,16 @@ const ProductList = () => {
         <Typography variant="h6" textAlign="center" sx={{ py: 8 }}>
           Cargando productos...
         </Typography>
+      ) : productos.length === 0 ? (
+        <Typography variant="h6" textAlign="center" sx={{ py: 8 }}>
+          No se encontraron productos
+        </Typography>
       ) : (
         <>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 2 }}>
-            {productos.map((producto) => {
-              return <ProductCard key={producto.id} producto={producto} />;
-            })}
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 1 }}>
+            {productos.map((producto) => (
+              <ProductCard key={producto.id} producto={producto} />
+            ))}
           </Box>
 
           {totalPages > 1 && (
@@ -65,5 +80,3 @@ const ProductList = () => {
 };
 
 export default ProductList;
-
-

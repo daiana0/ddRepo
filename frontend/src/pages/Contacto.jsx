@@ -64,25 +64,25 @@ const Contacto = () => {
       icon: <PhoneIcon sx={{ fontSize: 40, color: "primary.main" }} />,
       titulo: "Teléfono",
       info: "+54 261 662 6117",
-      descripcion: "Lunes a Viernes: 9:00 a 13:00 - 16:30 a 19:30hs Y Sábados de 9:00 a 13:00"
+      
     },
     {
       icon: <EmailIcon sx={{ fontSize: 40, color: "error.main" }} />,
       titulo: "Email",
       info: "divinodiseno@gmail.com",
-      descripcion: "Respondemos lo antes posible"
+      
     },
     {
       icon: <LocationIcon sx={{ fontSize: 40, color: "success.main" }} />,
       titulo: "Dirección",
       info: "Alvear 581, Luján de Cuyo",
-      descripcion: "Mendoza, Argentina"
+      
     },
     {
       icon: <ClockIcon sx={{ fontSize: 40, color: "warning.main" }} />,
       titulo: "Horarios",
-      info: "Lun - Vie: 9:00 a 13:00 - 16:30 a 19:30hs",
-      descripcion: "Sáb: 9:00 - 13:00"
+      info: "Lun - Vie: 9:00 a 13:00 - 16:30 a 19:30hs y Sáb: 9:00 - 13:00",
+      
     }
   ];
 
@@ -90,7 +90,7 @@ const Contacto = () => {
     <>
       <Header />
       <FilterBar />
-      <Box sx={{ backgroundColor: "#f8f9fa", minHeight: "100vh", py: 6 }}>
+      <Box sx={{ backgroundColor: "#d2bde2", minHeight: "100vh", py: 6 }}>
         <Container maxWidth="lg">
           
           {/* Hero Section */}
@@ -153,7 +153,7 @@ const Contacto = () => {
           </Grid>
 
           {/* Formulario de Contacto */}
-          <Paper elevation={2} sx={{ p: 5, borderRadius: 3 }}>
+          <Paper elevation={2} sx={{ p: 5,  borderRadius: 3, maxWidth: 700, mx: 'auto'}}>
             <Box sx={{ maxWidth: 500, mx: "auto" }}>
               <Typography variant="h4" fontWeight="bold" textAlign="center" sx={{ mb: 1 }}>
                 Envíanos un mensaje
@@ -171,8 +171,8 @@ const Contacto = () => {
               <form onSubmit={handleSubmit}>
   <Stack spacing={3}>
     {/* Fila 1: Nombre y Email */}
-    <Grid container spacing={3}>
-      <Grid item xs={12} md={6}>
+    <Grid container spacing={6}>
+      <Grid item xs={15} md={6}>
         <TextField
           fullWidth
           label="Nombre completo"
@@ -192,7 +192,7 @@ const Contacto = () => {
           }}
         />
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={15} md={6}>
         <TextField
           fullWidth
           label="Email"
@@ -216,8 +216,8 @@ const Contacto = () => {
     </Grid>
 
     {/* Fila 2: Teléfono y Asunto */}
-    <Grid container spacing={3}>
-      <Grid item xs={12} md={6}>
+    <Grid container spacing={6}>
+      <Grid item xs={15} md={6}>
         <TextField
           fullWidth
           label="Teléfono (opcional)"
@@ -236,7 +236,7 @@ const Contacto = () => {
           }}
         />
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={15} md={6}>
         <TextField
           fullWidth
           label="Asunto"
@@ -260,7 +260,7 @@ const Contacto = () => {
 
     {/* Mensaje */}
     <TextField
-      fullWidth
+      width={12}
       label="Mensaje"
       name="mensaje"
       value={formData.mensaje}
@@ -320,7 +320,7 @@ const Contacto = () => {
       ¡Visítanos!
     </Typography>
     <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-      Estamos ubicados en la tierra del sol y del buen vino
+      Estamos ubicados a metros del centro de salud de Luján
     </Typography>
     <Typography variant="h6" fontWeight="medium" color="primary">
       Alvear 581, Luján de Cuyo - Mendoza
@@ -328,7 +328,7 @@ const Contacto = () => {
   </Box>
   
   {/* Google Maps Embed */}
-  <Box sx={{ width: "100%", height: 450 }}>
+  <Box sx={{ width: "100%", height: 450, p:3 }}>
     <iframe
   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3348.8287651234567!2d-68.8924766!3d-33.0374359!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x967e751ca0410a7d%3A0x955730fb35b45bc0!2sDivino%20Dise%C3%B1o!5e0!3m2!1ses!2sar!4v1234567890123!5m2!1ses!2sar"
   width="100%"

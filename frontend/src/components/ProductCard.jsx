@@ -26,7 +26,8 @@ const ProductCard = ({ producto, votos }) => {
   const mejorDescuento = Math.max(descuentoProducto, descuentoCupon);
 
   // 3. Calculamos precio final
-  const precioFinal = producto.precio - (producto.precio * mejorDescuento) / 100;
+  const precioFinal =
+    producto.precio - (producto.precio * mejorDescuento) / 100;
 
   // 4. Saber si hay descuento
   const tieneDescuentoAplicado = mejorDescuento > 0;
@@ -44,12 +45,12 @@ const ProductCard = ({ producto, votos }) => {
       sx={{
         cursor: "pointer",
         width: 300,
-        height: 400,
+        height: 420,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         m: 2,
-        border: tieneOferta ? "2px solid red" : "1px solid #ccc",
+        border: tieneOferta ? "2px solid #fd00d3de" : "1px solid #ccc",
         position: "relative",
       }}
     >
@@ -60,7 +61,7 @@ const ProductCard = ({ producto, votos }) => {
             position: "absolute",
             top: 8,
             left: 8,
-            backgroundColor: "red",
+            backgroundColor: "#fd00d3de",
             color: "white",
             px: 1,
             py: 0.5,
@@ -74,41 +75,47 @@ const ProductCard = ({ producto, votos }) => {
       )}
 
       <CardMedia
-  component="img"
-  height="200"
-  image={(() => {
-    // Manejo flexible del campo 'imagenes'
-    let imagenes = [];
+        component="img"
+        height="300"
+        image={(() => {
+          // Manejo flexible del campo 'imagenes'
+          let imagenes = [];
 
-    try {
-      if (typeof producto.imagenes === "string") {
-        imagenes = JSON.parse(producto.imagenes);
-      } else if (Array.isArray(producto.imagenes)) {
-        imagenes = producto.imagenes;
-      } else if (producto.imagen) {
-        imagenes = [producto.imagen];
-      }
-    } catch (error) {
-      console.warn("Error parseando imágenes:", error);
-    }
+          try {
+            if (typeof producto.imagenes === "string") {
+              imagenes = JSON.parse(producto.imagenes);
+            } else if (Array.isArray(producto.imagenes)) {
+              imagenes = producto.imagenes;
+            } else if (producto.imagen) {
+              imagenes = [producto.imagen];
+            }
+          } catch (error) {
+            console.warn("Error parseando imágenes:", error);
+          }
 
-    if (imagenes.length > 0) {
-      const primera = imagenes[0];
-      return primera.startsWith("http")
-        ? primera
-        : `http://localhost:3000/uploads/${primera}`;
-    } else {
-      return "https://placehold.co/300x200?text=Sin+Imagen";
-    }
-  })()}
-  alt={producto.nombre}
-  sx={{
-    objectFit: "cover",
-    width: "100%",
-    maxHeight: 200,
-  }}
-/>
-
+          if (imagenes.length > 0) {
+            const primera = imagenes[0];
+            return primera.startsWith("http")
+              ? primera
+              : `http://localhost:3000/uploads/${primera}`;
+          } else {
+            return "https://placehold.co/300x200?text=Sin+Imagen";
+          }
+        })()}
+        alt={producto.nombre}
+        sx={{
+          pt:1,
+          objectFit: "cover",
+          // 1. Define el ancho.
+          width: "70%",
+          maxHeight: 250,
+          // 2. Aplica margen horizontal automático para centrar.
+          // '0 auto' establece margen superior/inferior en 0 y margen izquierdo/derecho en automático.
+          margin: "0 auto",
+          // 3. Asegura que la imagen se comporte como un bloque para que 'margin: auto' funcione.
+          display: "block",
+        }}
+      />
 
       <CardContent sx={{ flexGrow: 1 }}>
         {/* Nombre del producto */}
@@ -116,7 +123,6 @@ const ProductCard = ({ producto, votos }) => {
           {producto.nombre}
         </Typography>
 
-        
         {/* Precio con o sin descuento */}
         {tieneDescuentoAplicado ? (
           <>
@@ -127,7 +133,7 @@ const ProductCard = ({ producto, votos }) => {
             >
               ${producto.precio.toFixed(2)}
             </Typography>
-            <Typography variant="h6" fontWeight="bold" color="error">
+            <Typography variant="h6" fontWeight="bold" color="#fd00d3de">
               ${precioFinal.toFixed(2)}
             </Typography>
           </>
@@ -146,9 +152,9 @@ const ProductCard = ({ producto, votos }) => {
       </CardContent>
 
       <CardActions sx={{ display: "flex", justifyContent: "center", pt: 2 }}>
-        <Button 
-          size="small" 
-          variant="contained" 
+        <Button
+          size="small"
+          variant="contained"
           color={productInCart ? "success" : "secondary"}
           onClick={handleAddToCart}
         >

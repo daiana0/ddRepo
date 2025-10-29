@@ -386,6 +386,7 @@ const ProductosAdmin = () => {
               <InputLabel>Categoría</InputLabel>
               <Select
                 name="idCategoria"
+                label = "Categoria"
                 value={formData.idCategoria}
                 onChange={handleInputChange}
               >

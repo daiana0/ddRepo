@@ -188,7 +188,7 @@ const ProductoDetalle = () => {
   return (
     <>
       <Header />
-      <Box sx={{ backgroundColor: "#f8f9fa", minHeight: "100vh", py: 4 }}>
+      <Box sx={{ backgroundColor: "#d2bde2", minHeight: "100vh", py: 4 }}>
         <Container maxWidth="xl">
           {/* Imagen del producto */}
           <Paper elevation={2} sx={{ p: 4, mb: 3, borderRadius: 3 }}>

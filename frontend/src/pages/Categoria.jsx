@@ -55,7 +55,7 @@ function Categoria() {
           justifyContent: "center", 
           alignItems: "center", 
           minHeight: "100vh",
-          backgroundColor: "#f8f9fa"
+          backgroundColor: "#d2bde2"
         }}>
           <Box sx={{ textAlign: "center" }}>
             <CircularProgress size={60} />
@@ -73,7 +73,7 @@ function Categoria() {
     <>
       <Header />
       <FilterBar/>
-      <Box sx={{ backgroundColor: "#f8f9fa", minHeight: "100vh", py: 6 }}>
+      <Box sx={{ backgroundColor: "#d2bde2", minHeight: "100vh", py: 6 }}>
         <Container maxWidth="lg">
           
           {/* Hero Section */}
@@ -182,25 +182,7 @@ function Categoria() {
           )}
 
           {/* Call to Action */}
-          <Paper 
-            elevation={3} 
-            sx={{ 
-              p: 5, 
-              mt: 5, 
-              borderRadius: 3, 
-              textAlign: "center",
-              background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-              color: "white"
-            }}
-          >
-            <ProductIcon sx={{ fontSize: 50, mb: 2 }} />
-            <Typography variant="h4" fontWeight="bold" gutterBottom>
-              ¿No encuentras lo que buscas?
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 2, opacity: 0.95 }}>
-              Contáctanos y te ayudaremos a encontrar el producto perfecto para ti
-            </Typography>
-          </Paper>
+          
 
         </Container>
       </Box>
