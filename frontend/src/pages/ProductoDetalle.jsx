@@ -35,7 +35,6 @@ import Footer from "../components/Footer";
 import socketService from "../services/socket.service";
 import { useNavigate } from "react-router-dom";
 
-
 const ProductoDetalle = () => {
   const { id } = useParams();
   const [producto, setProducto] = useState(null);
@@ -54,7 +53,7 @@ const ProductoDetalle = () => {
   const cartQuantity = producto ? getItemQuantity(producto.id) : 0;
   const productInCart = producto ? isInCart(producto.id) : false;
 
-  // 🔹 Cargar producto
+  // Cargar producto
   useEffect(() => {
     if (!id) return;
     axios
@@ -63,7 +62,7 @@ const ProductoDetalle = () => {
       .catch((err) => console.error("Error producto", err));
   }, [id]);
 
-  // 🔹 Cargar imágenes
+  // Cargar imágenes
   useEffect(() => {
     if (!producto) return;
 
@@ -93,7 +92,7 @@ const ProductoDetalle = () => {
     setCurrentImageIndex(0);
   }, [producto]);
 
-  // 🔹 Cargar mensajes
+  // Cargar mensajes
   useEffect(() => {
     if (!id) return;
     axios
@@ -105,7 +104,7 @@ const ProductoDetalle = () => {
       });
   }, [id]);
 
-  // 🔹 Cargar variantes
+  // Cargar variantes
   useEffect(() => {
     if (!id) return;
     axios
@@ -118,12 +117,11 @@ const ProductoDetalle = () => {
   }, [id]);
   const navigate = useNavigate();
 
-const handleSeguirComprando = () => {
-  navigate("/"); // redirige a la página de inicio
-};
+  const handleSeguirComprando = () => {
+    navigate("/");
+  };
 
-
-  // 🔹 Socket de comentarios
+  // Socket de comentarios
   useEffect(() => {
     if (!id) return;
     const socket = socketService.connect();
@@ -147,14 +145,14 @@ const handleSeguirComprando = () => {
     };
   }, [id]);
 
-  // 🔹 Enviar mensaje
+  // Enviar mensaje
   const enviarMensaje = () => {
     if (!nuevoMensaje.trim()) return;
     socketService.sendComment(id, nuevoMensaje);
     setNuevoMensaje("");
   };
 
-  // 🔹 Manejo de cantidad seleccionada
+  // Manejo de cantidad seleccionada
   const handleQuantityChange = (action) => {
     if (action === "increment") {
       setSelectedQuantity((prev) => Math.min(prev + 1, producto?.stock || 0));
@@ -163,7 +161,7 @@ const handleSeguirComprando = () => {
     }
   };
 
-  // 🔹 Agregar al carrito
+  // Agregar al carrito
   const handleAddToCart = () => {
     if (selectedQuantity > 0) {
       setProductQuantity(producto, cartQuantity + selectedQuantity);
@@ -171,13 +169,13 @@ const handleSeguirComprando = () => {
     }
   };
 
-  // 🔹 Quitar del carrito
+  // Quitar del carrito
   const handleRemoveFromCart = () => {
     removeFromCart(producto.id);
     setSelectedQuantity(0);
   };
 
-  // 🔹 Carrusel de imágenes
+  // Carrusel de imágenes
   const nextImage = () =>
     setCurrentImageIndex((prev) => (prev + 1) % images.length);
   const prevImage = () =>
@@ -185,7 +183,7 @@ const handleSeguirComprando = () => {
 
   if (!producto) return <p>Cargando producto...</p>;
 
-  // 🔹 Cálculo de descuentos
+  // Cálculo de descuentos
   const descuentoProducto = producto.descuento || 0;
   const descuentoCupon = cupon?.porcentajeDescuento || 0;
   const mejorDescuento = Math.max(descuentoProducto, descuentoCupon);
@@ -556,19 +554,19 @@ const handleSeguirComprando = () => {
                     </Button>
                   )}
                   <Button
-    onClick={handleSeguirComprando}
-    variant="outlined"
-    color="primary"
-    size="large"
-    sx={{
-      py: 1.5,
-      maxWidth: 500,
-      width: "100%",
-      mt: 1,
-    }}
-  >
-    Seguir comprando
-  </Button>
+                    onClick={handleSeguirComprando}
+                    variant="outlined"
+                    color="primary"
+                    size="large"
+                    sx={{
+                      py: 1.5,
+                      maxWidth: 500,
+                      width: "100%",
+                      mt: 1,
+                    }}
+                  >
+                    Seguir comprando
+                  </Button>
                 </Stack>
 
                 {/* Info del carrito */}

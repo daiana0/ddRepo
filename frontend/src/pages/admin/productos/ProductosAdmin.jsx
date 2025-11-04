@@ -52,7 +52,6 @@ const ProductosAdmin = () => {
     idAdministrador: 1,
   });
 
-  // Estados para múltiples imágenes
   const [imageFiles, setImageFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
 
@@ -101,9 +100,6 @@ const ProductosAdmin = () => {
         idAdministrador: product.idAdministrador,
       });
 
-    
-
-      // Normalizar imagenes - puede venir como string o array
       let imagenesArray = [];
       if (product.imagenes) {
         if (typeof product.imagenes === "string") {
@@ -118,18 +114,18 @@ const ProductosAdmin = () => {
         }
       }
 
-      if (imagenesArray && imagenesArray.length > 0){
+      if (imagenesArray && imagenesArray.length > 0) {
         setImagePreviews(
           imagenesArray.map((img) => {
-          // si ya es URL completa, usarla; si solo es nombre de archivo, construir URL
-          return img.startsWith('http') ? img : `http://localhost:3000/uploads/${img}`;
-        })
-      );
+            return img.startsWith("http")
+              ? img
+              : `http://localhost:3000/uploads/${img}`;
+          })
+        );
       } else {
         setImagePreviews([]);
       }
 
-      // No tocar imageFiles al abrir para edición
       setImageFiles([]);
     } else {
       setEditingProduct(null);
@@ -182,7 +178,7 @@ const ProductosAdmin = () => {
 
       if (imageFiles.length > 0) {
         imageFiles.forEach((file) => {
-          submitData.append("imagenes", file); // Backend debe aceptar array
+          submitData.append("imagenes", file);
         });
       }
 
@@ -386,7 +382,7 @@ const ProductosAdmin = () => {
               <InputLabel>Categoría</InputLabel>
               <Select
                 name="idCategoria"
-                label = "Categoria"
+                label="Categoria"
                 value={formData.idCategoria}
                 onChange={handleInputChange}
               >

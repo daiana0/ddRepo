@@ -1,10 +1,30 @@
 import { useState, useEffect } from "react";
 import {
-  Box, Typography, Button, Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow, Paper, IconButton, Dialog, DialogTitle, DialogContent,
-  DialogActions, TextField, Switch, FormControlLabel, Pagination
+  Box,
+  Typography,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Switch,
+  FormControlLabel,
+  Pagination,
 } from "@mui/material";
-import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import {
+  Add as AddIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+} from "@mui/icons-material";
 import axios from "axios";
 
 const CuponesAdmin = () => {
@@ -29,7 +49,9 @@ const CuponesAdmin = () => {
 
   const fetchCupones = async () => {
     try {
-      const res = await axios.get(`http://localhost:3000/api/cupones?page=${page}&limit=${rowsPerPage}`);
+      const res = await axios.get(
+        `http://localhost:3000/api/cupones?page=${page}&limit=${rowsPerPage}`
+      );
       setCupones(res.data.data);
       setTotalItems(res.data.pagination.totalItems);
     } catch (error) {
@@ -43,7 +65,12 @@ const CuponesAdmin = () => {
       setFormData({ ...cupon });
     } else {
       setEditingCupon(null);
-      setFormData({ nombreCupon: "", codigoCupon: "", porcentajeDescuento: 0, activo: true });
+      setFormData({
+        nombreCupon: "",
+        codigoCupon: "",
+        porcentajeDescuento: 0,
+        activo: true,
+      });
     }
     setOpenDialog(true);
   };
@@ -52,13 +79,19 @@ const CuponesAdmin = () => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleSubmit = async () => {
     try {
       if (editingCupon) {
-        await axios.put(`http://localhost:3000/api/cupones/${editingCupon.id}`, formData);
+        await axios.put(
+          `http://localhost:3000/api/cupones/${editingCupon.id}`,
+          formData
+        );
       } else {
         await axios.post("http://localhost:3000/api/cupones", formData);
       }
@@ -85,8 +118,14 @@ const CuponesAdmin = () => {
   return (
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
-        <Typography variant="h4" fontWeight="bold">Cupones</Typography>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={() => handleOpenDialog()}>
+        <Typography variant="h4" fontWeight="bold">
+          Cupones
+        </Typography>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={() => handleOpenDialog()}
+        >
           Agregar Cupón
         </Button>
       </Box>
@@ -110,8 +149,12 @@ const CuponesAdmin = () => {
                 <TableCell align="right">{c.porcentajeDescuento}%</TableCell>
                 <TableCell>{c.activo ? "Sí" : "No"}</TableCell>
                 <TableCell>
-                  <IconButton onClick={() => handleOpenDialog(c)}><EditIcon /></IconButton>
-                  <IconButton onClick={() => handleDelete(c.id)}><DeleteIcon /></IconButton>
+                  <IconButton onClick={() => handleOpenDialog(c)}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton onClick={() => handleDelete(c.id)}>
+                    <DeleteIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
@@ -120,22 +163,67 @@ const CuponesAdmin = () => {
       </TableContainer>
 
       <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-        <Pagination count={totalPages} page={page} onChange={(e, newPage) => setPage(newPage)} />
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={(e, newPage) => setPage(newPage)}
+        />
       </Box>
 
-      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
-        <DialogTitle>{editingCupon ? "Editar Cupón" : "Nuevo Cupón"}</DialogTitle>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>
+          {editingCupon ? "Editar Cupón" : "Nuevo Cupón"}
+        </DialogTitle>
         <DialogContent>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
-            <TextField name="nombreCupon" label="Nombre" value={formData.nombreCupon} onChange={handleInputChange} fullWidth required />
-            <TextField name="codigoCupon" label="Código" value={formData.codigoCupon} onChange={handleInputChange} fullWidth required />
-            <TextField name="porcentajeDescuento" label="Descuento (%)" type="number" inputProps={{ min: 0, max: 100 }} value={formData.porcentajeDescuento} onChange={handleInputChange} fullWidth required />
-            <FormControlLabel control={<Switch name="activo" checked={formData.activo} onChange={handleInputChange} />} label="Activo" />
+            <TextField
+              name="nombreCupon"
+              label="Nombre"
+              value={formData.nombreCupon}
+              onChange={handleInputChange}
+              fullWidth
+              required
+            />
+            <TextField
+              name="codigoCupon"
+              label="Código"
+              value={formData.codigoCupon}
+              onChange={handleInputChange}
+              fullWidth
+              required
+            />
+            <TextField
+              name="porcentajeDescuento"
+              label="Descuento (%)"
+              type="number"
+              inputProps={{ min: 0, max: 100 }}
+              value={formData.porcentajeDescuento}
+              onChange={handleInputChange}
+              fullWidth
+              required
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  name="activo"
+                  checked={formData.activo}
+                  onChange={handleInputChange}
+                />
+              }
+              label="Activo"
+            />
           </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancelar</Button>
-          <Button onClick={handleSubmit} variant="contained">{editingCupon ? "Actualizar" : "Crear"}</Button>
+          <Button onClick={handleSubmit} variant="contained">
+            {editingCupon ? "Actualizar" : "Crear"}
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>

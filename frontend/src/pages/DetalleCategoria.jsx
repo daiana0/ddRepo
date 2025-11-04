@@ -8,11 +8,11 @@ import {
   CircularProgress,
   Paper,
   Pagination,
-  Grid
+  Grid,
 } from "@mui/material";
 import {
   Category as CategoryIcon,
-  Inventory as ProductIcon
+  Inventory as ProductIcon,
 } from "@mui/icons-material";
 import Header from "../components/Header";
 import FilterBar from "../components/FilterBar";
@@ -33,7 +33,9 @@ function DetalleCategoria() {
       try {
         const [categoriaRes, productosRes] = await Promise.all([
           axios.get(`http://localhost:3000/api/categorias/${id}`),
-          axios.get(`http://localhost:3000/api/productos?page=${page}&limit=12&idCategoria=${id}`)
+          axios.get(
+            `http://localhost:3000/api/productos?page=${page}&limit=12&idCategoria=${id}`
+          ),
         ]);
 
         setDetalleCategoria(categoriaRes.data.data);
@@ -50,7 +52,7 @@ function DetalleCategoria() {
 
   const handlePageChange = (event, value) => {
     setPage(value);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (loading) {
@@ -58,13 +60,15 @@ function DetalleCategoria() {
       <>
         <Header />
         <FilterBar />
-        <Box sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "100vh",
-          backgroundColor: "#f8f9fa"
-        }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "100vh",
+            backgroundColor: "#f8f9fa",
+          }}
+        >
           <Box sx={{ textAlign: "center" }}>
             <CircularProgress size={60} />
             <Typography variant="h6" sx={{ mt: 2, color: "text.secondary" }}>
@@ -83,7 +87,6 @@ function DetalleCategoria() {
       <FilterBar />
       <Box sx={{ backgroundColor: "#d2bde2", minHeight: "100vh", py: 6 }}>
         <Container maxWidth="lg">
-
           <Paper
             elevation={3}
             sx={{
@@ -92,7 +95,7 @@ function DetalleCategoria() {
               borderRadius: 3,
               textAlign: "center",
               background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              color: "white"
+              color: "white",
             }}
           >
             <CategoryIcon sx={{ fontSize: 60, mb: 2 }} />
@@ -100,15 +103,28 @@ function DetalleCategoria() {
               {detalleCategoria?.nombre}
             </Typography>
             {detalleCategoria?.descripcion && (
-              <Typography variant="h6" sx={{ maxWidth: 700, mx: "auto", lineHeight: 1.8, opacity: 0.95 }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  maxWidth: 700,
+                  mx: "auto",
+                  lineHeight: 1.8,
+                  opacity: 0.95,
+                }}
+              >
                 {detalleCategoria.descripcion}
               </Typography>
             )}
           </Paper>
 
           {productos.length === 0 ? (
-            <Paper elevation={2} sx={{ p: 6, borderRadius: 3, textAlign: "center" }}>
-              <ProductIcon sx={{ fontSize: 60, color: "text.secondary", mb: 2 }} />
+            <Paper
+              elevation={2}
+              sx={{ p: 6, borderRadius: 3, textAlign: "center" }}
+            >
+              <ProductIcon
+                sx={{ fontSize: 60, color: "text.secondary", mb: 2 }}
+              />
               <Typography variant="h5" color="text.secondary" gutterBottom>
                 No hay productos disponibles en esta categoría
               </Typography>
@@ -127,7 +143,7 @@ function DetalleCategoria() {
               </Grid>
 
               {totalPages > 1 && (
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+                <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
                   <Pagination
                     count={totalPages}
                     page={page}
@@ -141,7 +157,6 @@ function DetalleCategoria() {
               )}
             </>
           )}
-
         </Container>
       </Box>
       <Footer />

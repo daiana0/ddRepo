@@ -6,11 +6,8 @@ import {
   Drawer,
   TextField,
   Typography,
-  FormControlLabel,
-  Checkbox,
   Button,
   Card,
-  CardContent,
   List,
   ListItem,
   ListItemButton,
@@ -18,11 +15,11 @@ import {
   Divider,
   useMediaQuery,
   useTheme,
-  IconButton
+  IconButton,
 } from "@mui/material";
 import {
   FilterList as FilterIcon,
-  Close as CloseIcon
+  Close as CloseIcon,
 } from "@mui/icons-material";
 import Header from "../components/Header";
 import Banner from "../components/Banner";
@@ -34,7 +31,7 @@ import Cupon from "../components/Cupon";
 
 const Home = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [mobileOpen, setMobileOpen] = useState(false);
   const [categorias, setCategorias] = useState([]);
 
@@ -42,13 +39,15 @@ const Home = () => {
     nombre: "",
     precioMin: "",
     precioMax: "",
-    idCategoria: ""
+    idCategoria: "",
   });
 
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/categorias?page=1&limit=50&activo=all");
+        const response = await axios.get(
+          "http://localhost:3000/api/categorias?page=1&limit=50&activo=all"
+        );
         setCategorias(response.data.data);
       } catch (error) {
         console.error("Error fetching categorias:", error);
@@ -58,7 +57,7 @@ const Home = () => {
   }, []);
 
   const handleFilterChange = (field, value) => {
-    setFilters(prev => ({ ...prev, [field]: value }));
+    setFilters((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleClearFilters = () => {
@@ -66,7 +65,7 @@ const Home = () => {
       nombre: "",
       precioMin: "",
       precioMax: "",
-      idCategoria: ""
+      idCategoria: "",
     });
   };
 
@@ -76,7 +75,14 @@ const Home = () => {
 
   const drawerContent = (
     <Box sx={{ width: 280, p: 3 }}>
-      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 3 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mb: 3,
+        }}
+      >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <FilterIcon sx={{ mr: 1, color: "primary.main" }} />
           <Typography variant="h6" fontWeight="bold">
@@ -145,7 +151,9 @@ const Home = () => {
           <ListItem key={categoria.id} disablePadding>
             <ListItemButton
               selected={filters.idCategoria === categoria.id.toString()}
-              onClick={() => handleFilterChange("idCategoria", categoria.id.toString())}
+              onClick={() =>
+                handleFilterChange("idCategoria", categoria.id.toString())
+              }
             >
               <ListItemText primary={categoria.nombre} />
             </ListItemButton>
@@ -171,8 +179,8 @@ const Home = () => {
       <Banner />
       <Cupon />
 
-      <Container maxWidth="xl"  sx={{ py: 4 }}>
-        <Box sx={{ display: 'flex', gap: 3 }}>
+      <Container maxWidth="xl" sx={{ py: 4, borderRadius: 1 }}>
+        <Box sx={{ display: "flex", gap: 3 }}>
           {isMobile ? (
             <>
               <Button
@@ -195,14 +203,12 @@ const Home = () => {
               </Drawer>
             </>
           ) : (
-            <Box sx={{ flexShrink: 0, mt:1 }}>
-              <Card elevation={2} >
-                {drawerContent}
-              </Card>
+            <Box sx={{ flexShrink: 0, mt: 1 }}>
+              <Card elevation={2}>{drawerContent}</Card>
             </Box>
           )}
 
-          <Box sx={{ flex: 1, mt:-5 }}>
+          <Box sx={{ flex: 1, mt: -5 }}>
             <ProductList filters={filters} />
           </Box>
         </Box>
@@ -215,5 +221,3 @@ const Home = () => {
 };
 
 export default Home;
-
-

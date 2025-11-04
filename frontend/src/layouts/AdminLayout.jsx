@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Box,
   Drawer,
@@ -13,8 +13,8 @@ import {
   ListItemIcon,
   ListItemText,
   Container,
-} from '@mui/material';
-import { LocalOffer as LocalOfferIcon } from '@mui/icons-material';
+} from "@mui/material";
+import { LocalOffer as LocalOfferIcon } from "@mui/icons-material";
 import {
   Menu as MenuIcon,
   Dashboard as DashboardIcon,
@@ -23,17 +23,21 @@ import {
   AdminPanelSettings as AdminIcon,
   ShoppingCart as OrdersIcon,
   People as CustomersIcon,
-} from '@mui/icons-material';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+} from "@mui/icons-material";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 const drawerWidth = 240;
 
 const menuItems = [
-  { text: 'Dashboard', icon: <DashboardIcon />, path: '/admin' },
-  { text: 'Productos', icon: <ProductsIcon />, path: '/admin/productos' },
-  { text: 'Categorías', icon: <CategoryIcon />, path: '/admin/categorias' },
-  { text: 'Administradores', icon: <AdminIcon />, path: '/admin/administradores' },
-  { text: 'Cupones', icon: <LocalOfferIcon />, path: '/admin/cupones' },
+  { text: "Dashboard", icon: <DashboardIcon />, path: "/admin" },
+  { text: "Productos", icon: <ProductsIcon />, path: "/admin/productos" },
+  { text: "Categorías", icon: <CategoryIcon />, path: "/admin/categorias" },
+  {
+    text: "Administradores",
+    icon: <AdminIcon />,
+    path: "/admin/administradores",
+  },
+  { text: "Cupones", icon: <LocalOfferIcon />, path: "/admin/cupones" },
 ];
 
 const AdminLayout = () => {
@@ -60,15 +64,22 @@ const AdminLayout = () => {
               selected={location.pathname === item.path}
               onClick={() => navigate(item.path)}
               sx={{
-                '&.Mui-selected': {
-                  backgroundColor: 'primary.light',
-                  '&:hover': {
-                    backgroundColor: 'primary.light',
+                "&.Mui-selected": {
+                  backgroundColor: "primary.light",
+                  "&:hover": {
+                    backgroundColor: "primary.light",
                   },
                 },
               }}
             >
-              <ListItemIcon sx={{ color: location.pathname === item.path ? 'primary.main' : 'inherit' }}>
+              <ListItemIcon
+                sx={{
+                  color:
+                    location.pathname === item.path
+                      ? "primary.main"
+                      : "inherit",
+                }}
+              >
                 {item.icon}
               </ListItemIcon>
               <ListItemText primary={item.text} />
@@ -80,14 +91,14 @@ const AdminLayout = () => {
   );
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <AppBar
         position="fixed"
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
-          backgroundColor: 'white',
-          color: 'text.primary',
+          backgroundColor: "white",
+          color: "text.primary",
           boxShadow: 1,
         }}
       >
@@ -97,7 +108,7 @@ const AdminLayout = () => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ mr: 2, display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
@@ -119,8 +130,11 @@ const AdminLayout = () => {
             keepMounted: true,
           }}
           sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            display: { xs: "block", sm: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
         >
           {drawer}
@@ -128,8 +142,11 @@ const AdminLayout = () => {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            display: { xs: "none", sm: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
           open
         >
@@ -143,8 +160,8 @@ const AdminLayout = () => {
           flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          backgroundColor: '#f5f5f5',
-          minHeight: '100vh',
+          backgroundColor: "#f5f5f5",
+          minHeight: "100vh",
         }}
       >
         <Toolbar />

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -19,13 +19,13 @@ import {
   FormControlLabel,
   Switch,
   Pagination,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Add as AddIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
-} from '@mui/icons-material';
-import axios from 'axios';
+} from "@mui/icons-material";
+import axios from "axios";
 
 const CategoriasAdmin = () => {
   const [categorias, setCategorias] = useState([]);
@@ -33,22 +33,18 @@ const CategoriasAdmin = () => {
   const rowsPerPage = 10;
   const [totalItems, setTotalItems] = useState(0);
 
-  // Modal
   const [openDialog, setOpenDialog] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
 
-  // Formulario
   const [formData, setFormData] = useState({
-    nombre: '',
-    descripcion: '',
+    nombre: "",
+    descripcion: "",
     activa: true,
   });
 
-  // Imagen
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
-  // Fetch categorías
   useEffect(() => {
     fetchCategorias();
   }, [page]);
@@ -61,7 +57,7 @@ const CategoriasAdmin = () => {
       setCategorias(response.data.data);
       setTotalItems(response.data.pagination.totalItems);
     } catch (error) {
-      console.error('Error fetching categorias:', error);
+      console.error("Error fetching categorias:", error);
     }
   };
 
@@ -72,12 +68,12 @@ const CategoriasAdmin = () => {
       setEditingCategory(category);
       setFormData({
         nombre: category.nombre,
-        descripcion: category.descripcion || '',
+        descripcion: category.descripcion || "",
         activa: category.activa,
       });
       setImagePreview(
         category.imagenUrl
-          ? category.imagenUrl.startsWith('http')
+          ? category.imagenUrl.startsWith("http")
             ? category.imagenUrl
             : `http://localhost:3000/uploads/${category.imagenUrl}`
           : null
@@ -85,7 +81,7 @@ const CategoriasAdmin = () => {
       setImageFile(null);
     } else {
       setEditingCategory(null);
-      setFormData({ nombre: '', descripcion: '', activa: true });
+      setFormData({ nombre: "", descripcion: "", activa: true });
       setImageFile(null);
       setImagePreview(null);
     }
@@ -101,9 +97,9 @@ const CategoriasAdmin = () => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -118,40 +114,38 @@ const CategoriasAdmin = () => {
   const handleSubmit = async () => {
     try {
       const submitData = new FormData();
-      submitData.append('nombre', formData.nombre);
-      submitData.append('descripcion', formData.descripcion);
-      submitData.append('activa', formData.activa);
+      submitData.append("nombre", formData.nombre);
+      submitData.append("descripcion", formData.descripcion);
+      submitData.append("activa", formData.activa);
 
-      if (imageFile) submitData.append('imagen', imageFile);
+      if (imageFile) submitData.append("imagen", imageFile);
 
       if (editingCategory) {
         await axios.put(
           `http://localhost:3000/api/categorias/${editingCategory.id}`,
           submitData,
-          { headers: { 'Content-Type': 'multipart/form-data' } }
+          { headers: { "Content-Type": "multipart/form-data" } }
         );
       } else {
-        await axios.post(
-          'http://localhost:3000/api/categorias',
-          submitData,
-          { headers: { 'Content-Type': 'multipart/form-data' } }
-        );
+        await axios.post("http://localhost:3000/api/categorias", submitData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
       }
 
       fetchCategorias();
       handleCloseDialog();
     } catch (error) {
-      console.error('Error saving category:', error);
+      console.error("Error saving category:", error);
     }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('¿Estás seguro de eliminar esta categoría?')) {
+    if (window.confirm("¿Estás seguro de eliminar esta categoría?")) {
       try {
         await axios.delete(`http://localhost:3000/api/categorias/${id}`);
         fetchCategorias();
       } catch (error) {
-        console.error('Error deleting category:', error);
+        console.error("Error deleting category:", error);
       }
     }
   };
@@ -161,9 +155,24 @@ const CategoriasAdmin = () => {
   return (
     <Box>
       {/* Header */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4" fontWeight="bold">Categorías</Typography>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={() => handleOpenDialog()}>Agregar Categoría</Button>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 3,
+        }}
+      >
+        <Typography variant="h4" fontWeight="bold">
+          Categorías
+        </Typography>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={() => handleOpenDialog()}
+        >
+          Agregar Categoría
+        </Button>
       </Box>
 
       {/* Tabla */}
@@ -179,23 +188,38 @@ const CategoriasAdmin = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {categorias.map(c => (
+            {categorias.map((c) => (
               <TableRow key={c.id}>
                 <TableCell>{c.nombre}</TableCell>
-                <TableCell>{c.descripcion || 'Sin descripción'}</TableCell>
-                <TableCell>{c.activa ? 'Activa' : 'Inactiva'}</TableCell>
+                <TableCell>{c.descripcion || "Sin descripción"}</TableCell>
+                <TableCell>{c.activa ? "Activa" : "Inactiva"}</TableCell>
                 <TableCell>
                   {c.imagenUrl ? (
                     <img
-                      src={c.imagenUrl.startsWith('http') ? c.imagenUrl : `http://localhost:3000/uploads/${c.imagenUrl}`}
+                      src={
+                        c.imagenUrl.startsWith("http")
+                          ? c.imagenUrl
+                          : `http://localhost:3000/uploads/${c.imagenUrl}`
+                      }
                       alt={c.nombre}
-                      style={{ width: 50, height: 50, objectFit: 'cover', borderRadius: 4 }}
+                      style={{
+                        width: 50,
+                        height: 50,
+                        objectFit: "cover",
+                        borderRadius: 4,
+                      }}
                     />
-                  ) : 'N/A'}
+                  ) : (
+                    "N/A"
+                  )}
                 </TableCell>
                 <TableCell>
-                  <IconButton size="small" onClick={() => handleOpenDialog(c)}><EditIcon /></IconButton>
-                  <IconButton size="small" onClick={() => handleDelete(c.id)}><DeleteIcon /></IconButton>
+                  <IconButton size="small" onClick={() => handleOpenDialog(c)}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton size="small" onClick={() => handleDelete(c.id)}>
+                    <DeleteIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
@@ -204,30 +228,88 @@ const CategoriasAdmin = () => {
       </TableContainer>
 
       {/* Paginación */}
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-        <Pagination count={totalPages} page={page} onChange={handleChangePage} color="primary" showFirstButton showLastButton />
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={handleChangePage}
+          color="primary"
+          showFirstButton
+          showLastButton
+        />
       </Box>
 
       {/* Modal */}
-      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
-        <DialogTitle>{editingCategory ? 'Editar Categoría' : 'Nueva Categoría'}</DialogTitle>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>
+          {editingCategory ? "Editar Categoría" : "Nueva Categoría"}
+        </DialogTitle>
         <DialogContent>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
-            <TextField name="nombre" label="Nombre" value={formData.nombre} onChange={handleInputChange} fullWidth required />
-            <TextField name="descripcion" label="Descripción" value={formData.descripcion} onChange={handleInputChange} fullWidth multiline rows={2} />
-            
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
+            <TextField
+              name="nombre"
+              label="Nombre"
+              value={formData.nombre}
+              onChange={handleInputChange}
+              fullWidth
+              required
+            />
+            <TextField
+              name="descripcion"
+              label="Descripción"
+              value={formData.descripcion}
+              onChange={handleInputChange}
+              fullWidth
+              multiline
+              rows={2}
+            />
+
             <Box>
-              <Typography variant="subtitle2" gutterBottom>Imagen de la categoría</Typography>
-              <input type="file" accept="image/*" onChange={handleImageChange} style={{ marginBottom: 16 }} />
-              {imagePreview && <img src={imagePreview} alt="Preview" style={{ width: 120, height: 120, objectFit: 'cover', borderRadius: 8 }} />}
+              <Typography variant="subtitle2" gutterBottom>
+                Imagen de la categoría
+              </Typography>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                style={{ marginBottom: 16 }}
+              />
+              {imagePreview && (
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  style={{
+                    width: 120,
+                    height: 120,
+                    objectFit: "cover",
+                    borderRadius: 8,
+                  }}
+                />
+              )}
             </Box>
 
-            <FormControlLabel control={<Switch name="activa" checked={formData.activa} onChange={handleInputChange} />} label="Activa" />
+            <FormControlLabel
+              control={
+                <Switch
+                  name="activa"
+                  checked={formData.activa}
+                  onChange={handleInputChange}
+                />
+              }
+              label="Activa"
+            />
           </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancelar</Button>
-          <Button onClick={handleSubmit} variant="contained">{editingCategory ? 'Actualizar' : 'Crear'}</Button>
+          <Button onClick={handleSubmit} variant="contained">
+            {editingCategory ? "Actualizar" : "Crear"}
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>

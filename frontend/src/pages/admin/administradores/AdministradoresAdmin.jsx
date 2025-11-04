@@ -51,10 +51,6 @@ const AdministradoresAdmin = () => {
     fetchAdministradores();
   }, [page]);
 
-  /*
-   Función para obtener administradores del servidor
-
-   */
   const fetchAdministradores = async () => {
     try {
       const response = await axios.get(
@@ -67,9 +63,6 @@ const AdministradoresAdmin = () => {
     }
   };
 
-  /**
-   * Manejador para cambio de página
-   */
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -99,17 +92,11 @@ const AdministradoresAdmin = () => {
     setOpenDialog(true);
   };
 
-  /**
-   * Función para cerrar el modal
-   */
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setEditingAdmin(null);
   };
 
-  /**
-   * Manejador para cambios en inputs
-   */
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -118,26 +105,20 @@ const AdministradoresAdmin = () => {
     }));
   };
 
-  /**
-   * Función para enviar el formulario
-   */
   const handleSubmit = async () => {
     try {
       const dataToSend = { ...formData };
 
-      // Si estamos editando y no hay contraseña nueva, no enviarla
       if (editingAdmin && !dataToSend.contrasena) {
         delete dataToSend.contrasena;
       }
 
       if (editingAdmin) {
-        // Actualizar administrador existente
         await axios.put(
           `http://localhost:3000/api/administradores/${editingAdmin.id}`,
           dataToSend
         );
       } else {
-        // Crear nuevo administrador
         await axios.post(
           "http://localhost:3000/api/administradores",
           dataToSend
@@ -151,9 +132,6 @@ const AdministradoresAdmin = () => {
     }
   };
 
-  /**
-   * Función para eliminar (desactivar) un administrador
-   */
   const handleDelete = async (id) => {
     if (
       window.confirm(
@@ -173,7 +151,6 @@ const AdministradoresAdmin = () => {
 
   return (
     <Box>
-      {/* Encabezado */}
       <Box
         sx={{
           display: "flex",
