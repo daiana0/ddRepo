@@ -1,4 +1,4 @@
-// src/components/checkout/OrderConfirmation.jsx
+
 import { Box, Typography, Button, Paper, Alert } from '@mui/material';
 import { CheckCircle as CheckCircleIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';

@@ -18,22 +18,18 @@ const ProductCard = ({ producto, votos }) => {
 
   const tieneOferta = producto.oferta;
 
-  // 1. Obtenemos los descuentos
   const descuentoProducto = producto.descuento || 0;
   const descuentoCupon = cupon?.porcentajeDescuento || 0;
 
-  // 2. Elegimos el mayor
   const mejorDescuento = Math.max(descuentoProducto, descuentoCupon);
 
-  // 3. Calculamos precio final
   const precioFinal =
     producto.precio - (producto.precio * mejorDescuento) / 100;
 
-  // 4. Saber si hay descuento
   const tieneDescuentoAplicado = mejorDescuento > 0;
 
   const handleAddToCart = (e) => {
-    e.stopPropagation(); // Evitar que se navegue al detalle del producto
+    e.stopPropagation();
     addToCart(producto);
   };
 
@@ -55,7 +51,6 @@ const ProductCard = ({ producto, votos }) => {
         position: "relative",
       }}
     >
-      {/* Indicador de oferta */}
       {tieneOferta && (
         <Box
           sx={{
@@ -79,7 +74,6 @@ const ProductCard = ({ producto, votos }) => {
         component="img"
         height="300"
         image={(() => {
-          // Manejo flexible del campo 'imagenes'
           let imagenes = [];
 
           try {
@@ -105,26 +99,23 @@ const ProductCard = ({ producto, votos }) => {
         })()}
         alt={producto.nombre}
         sx={{
-          pt:1,
+          pt: 1,
           objectFit: "cover",
-          // 1. Define el ancho.
+
           width: "70%",
           maxHeight: 250,
-          // 2. Aplica margen horizontal automático para centrar.
-          // '0 auto' establece margen superior/inferior en 0 y margen izquierdo/derecho en automático.
+
           margin: "0 auto",
-          // 3. Asegura que la imagen se comporte como un bloque para que 'margin: auto' funcione.
+
           display: "block",
         }}
       />
 
       <CardContent sx={{ flexGrow: 1 }}>
-        {/* Nombre del producto */}
         <Typography variant="subtitle1" noWrap>
           {producto.nombre}
         </Typography>
 
-        {/* Precio con o sin descuento */}
         {tieneDescuentoAplicado ? (
           <>
             <Typography
@@ -144,7 +135,6 @@ const ProductCard = ({ producto, votos }) => {
           </Typography>
         )}
 
-        {/* Votos */}
         {votos !== undefined && (
           <Typography variant="h6" fontWeight="bold" sx={{ mt: 1 }}>
             Votos: {votos}

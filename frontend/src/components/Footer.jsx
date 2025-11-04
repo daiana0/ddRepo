@@ -7,9 +7,7 @@ const Footer = () => {
   return (
     <Box sx={{ backgroundColor: "#333", color: "white", py: 3 }}>
       <Container maxWidth="lg">
-        {/* Grid responsive */}
         <Grid container spacing={4}>
-          {/* Columna 1: Contacto y redes */}
           <Grid
             item
             xs={12}
@@ -32,21 +30,38 @@ const Footer = () => {
               <Typography variant="h6" gutterBottom>
                 Síguenos
               </Typography>
-              <Box sx={{ display: "flex", justifyContent: { xs: "center", sm: "flex-start" }, gap: 1 }}>
-                <IconButton color="inherit" href="https://facebook.com" aria-label="Facebook">
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: { xs: "center", sm: "flex-start" },
+                  gap: 1,
+                }}
+              >
+                <IconButton
+                  color="inherit"
+                  href="https://facebook.com"
+                  aria-label="Facebook"
+                >
                   <FacebookIcon />
                 </IconButton>
-                <IconButton color="inherit" href="https://instagram.com" aria-label="Instagram">
+                <IconButton
+                  color="inherit"
+                  href="https://instagram.com"
+                  aria-label="Instagram"
+                >
                   <InstagramIcon />
                 </IconButton>
-                <IconButton color="inherit" href="https://twitter.com" aria-label="Twitter">
+                <IconButton
+                  color="inherit"
+                  href="https://twitter.com"
+                  aria-label="Twitter"
+                >
                   <TwitterIcon />
                 </IconButton>
               </Box>
             </Box>
           </Grid>
 
-          {/* Columna 2: Nuestro local */}
           <Grid
             item
             xs={12}
@@ -58,7 +73,8 @@ const Footer = () => {
               Nuestro local
             </Typography>
             <Typography variant="body2" sx={{ mt: 2 }}>
-              Horario de Atención: Lunes a Viernes: 9:00 a 13:00 - 16:30 a 19:30hs y Sábados de 9:00 a 13:00
+              Horario de Atención: Lunes a Viernes: 9:00 a 13:00 - 16:30 a
+              19:30hs y Sábados de 9:00 a 13:00
             </Typography>
             <Typography variant="body2" sx={{ mt: 1 }}>
               Dirección: Alvear 581, Luján de Cuyo
@@ -67,13 +83,14 @@ const Footer = () => {
               Para más información no dudes en contactarnos.
             </Typography>
           </Grid>
-
-         
         </Grid>
 
-        {/* Separador y copyright */}
         <Box sx={{ borderTop: "1px solid #555", pt: 3, mt: 4 }}>
-          <Typography variant="body2" color="inherit" sx={{ textAlign: "center" }}>
+          <Typography
+            variant="body2"
+            color="inherit"
+            sx={{ textAlign: "center" }}
+          >
             © 2025 Divino Diseño - Todos los derechos reservados.
           </Typography>
         </Box>

@@ -38,13 +38,12 @@ const Header = () => {
       <AppBar position="static" color="secondary" sx={{ borderRadius: 0 }}>
         <Container>
           <Toolbar sx={{ flexWrap: "wrap", justifyContent: "space-between" }}>
-            {/* Logo y nombre */}
             <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
                 flexGrow: 1,
-                minWidth: 0, // importante para que se comprima en móviles
+                minWidth: 0,
               }}
             >
               <Link
@@ -64,7 +63,7 @@ const Header = () => {
                 <Typography
                   variant="h6"
                   component="div"
-                  color= "white"
+                  color="white"
                   sx={{
                     fontSize: { xs: "1rem", sm: "1.25rem", md: "1.5rem" },
                     whiteSpace: "nowrap",
@@ -75,7 +74,6 @@ const Header = () => {
               </Link>
             </Box>
 
-            {/* Botones de carrito / login */}
             <Box
               sx={{
                 display: "flex",
@@ -84,7 +82,10 @@ const Header = () => {
                 flexShrink: 0,
               }}
             >
-              <IconButton color="inherit" onClick={() => setCartModalOpen(true)}>
+              <IconButton
+                color="inherit"
+                onClick={() => setCartModalOpen(true)}
+              >
                 <Badge badgeContent={getTotalItems()} color="error">
                   <ShoppingCartIcon />
                 </Badge>
@@ -95,7 +96,11 @@ const Header = () => {
                   <IconButton color="inherit" onClick={handleMenuOpen}>
                     <Avatar alt="Usuario" />
                   </IconButton>
-                  <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleMenuClose}
+                  >
                     <MenuItem onClick={handleMenuClose}>{user?.email}</MenuItem>
                     <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
                   </Menu>
@@ -117,8 +122,10 @@ const Header = () => {
         </Container>
       </AppBar>
 
-      {/* Modales */}
-      <LoginModal open={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
+      <LoginModal
+        open={loginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
+      />
       <CartModal open={cartModalOpen} onClose={() => setCartModalOpen(false)} />
     </>
   );

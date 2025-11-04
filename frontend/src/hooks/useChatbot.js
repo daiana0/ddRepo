@@ -1,37 +1,35 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-// Hook personalizado para extender funcionalidades del chatbot
 export const useChatbot = () => {
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
 
   useEffect(() => {
-    // Cargar datos de productos y categorías para el contexto del chatbot
     const loadData = async () => {
       try {
         const [productosRes, categoriasRes] = await Promise.all([
-          axios.get('http://localhost:3000/api/productos?limit=50'),
-          axios.get('http://localhost:3000/api/categorias')
+          axios.get("http://localhost:3000/api/productos?limit=50"),
+          axios.get("http://localhost:3000/api/categorias"),
         ]);
-        
+
         setProductos(productosRes.data.data);
         setCategorias(categoriasRes.data.data);
       } catch (error) {
-        console.error('Error cargando datos para chatbot:', error);
+        console.error("Error cargando datos para chatbot:", error);
       }
     };
 
     loadData();
   }, []);
 
-  // Función para generar contexto enriquecido con datos reales
   const generateEnhancedContext = (userInput) => {
-    const productosInfo = productos.slice(0, 10).map(p => 
-      `- ${p.nombre}: $${p.precio} (Stock: ${p.stock})`
-    ).join('\n');
+    const productosInfo = productos
+      .slice(0, 10)
+      .map((p) => `- ${p.nombre}: $${p.precio} (Stock: ${p.stock})`)
+      .join("\n");
 
-    const categoriasInfo = categorias.map(c => c.nombre).join(', ');
+    const categoriasInfo = categorias.map((c) => c.nombre).join(", ");
 
     return `
       Eres un asistente virtual para "Divino Diseño", una tienda online de productos de diseño y decoración.
@@ -62,33 +60,52 @@ export const useChatbot = () => {
     `;
   };
 
-  // Función para detectar intenciones específicas
   const detectIntent = (userInput) => {
     const input = userInput.toLowerCase();
-    
-    if (input.includes('precio') || input.includes('costo') || input.includes('cuanto')) {
-      return 'precio';
+
+    if (
+      input.includes("precio") ||
+      input.includes("costo") ||
+      input.includes("cuanto")
+    ) {
+      return "precio";
     }
-    if (input.includes('stock') || input.includes('disponible') || input.includes('hay')) {
-      return 'stock';
+    if (
+      input.includes("stock") ||
+      input.includes("disponible") ||
+      input.includes("hay")
+    ) {
+      return "stock";
     }
-    if (input.includes('descuento') || input.includes('oferta') || input.includes('cupon')) {
-      return 'descuento';
+    if (
+      input.includes("descuento") ||
+      input.includes("oferta") ||
+      input.includes("cupon")
+    ) {
+      return "descuento";
     }
-    if (input.includes('categoria') || input.includes('tipo') || input.includes('clase')) {
-      return 'categoria';
+    if (
+      input.includes("categoria") ||
+      input.includes("tipo") ||
+      input.includes("clase")
+    ) {
+      return "categoria";
     }
-    if (input.includes('contacto') || input.includes('telefono') || input.includes('email')) {
-      return 'contacto';
+    if (
+      input.includes("contacto") ||
+      input.includes("telefono") ||
+      input.includes("email")
+    ) {
+      return "contacto";
     }
-    
-    return 'general';
+
+    return "general";
   };
 
   return {
     productos,
     categorias,
     generateEnhancedContext,
-    detectIntent
+    detectIntent,
   };
 };

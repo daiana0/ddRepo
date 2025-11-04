@@ -7,8 +7,7 @@ const syncDatabase = async () => {
         
         await sequelize.authenticate();
         console.log("✅ Conexión a DB establecida");
-        
-        // Sincronizar todos los modelos
+               
         await sequelize.sync({ alter: true });
         console.log("✅ Modelos sincronizados exitosamente");
         

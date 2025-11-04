@@ -3,20 +3,14 @@ const router = express.Router();
 
 const pagosController = require("../controllers/pagos.controller");
 
+router.get("/", pagosController.getPagos);
 
-// GET /api/pagos - Obtener todos los pagos
-router.get("/",pagosController.getPagos);
+router.get("/:id", pagosController.getPago);
 
-// GET /api/pagos/:id - Obtener un pago por ID
-router.get("/:id",pagosController.getPago);
+router.post("/", pagosController.createPago);
 
-// POST /api/pagos - Crear un nuevo pago
-router.post("/",pagosController.createPago);
-
-// PUT /api/pagos/:id - Actualizar un pago
 router.put("/:id", pagosController.updatePago);
 
-// DELETE /api/pagos/:id - Eliminar un pago (soft delete)
 router.delete("/:id", pagosController.deletePago);
 
 module.exports = router;

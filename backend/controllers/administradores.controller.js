@@ -18,7 +18,7 @@ const getAdministradores = async (req, res) => {
     } else if (activa === "false") {
       where.activa = false;
     }
-    // si es "all" => no agregamos condición al where
+    
 
     const administradores = await Administrador.findAndCountAll({
       where,

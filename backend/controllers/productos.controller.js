@@ -1,20 +1,33 @@
-const { Producto, Categoria, Administrador, Variante, Mensaje } = require("../models/index.model");
+const {
+  Producto,
+  Categoria,
+  Administrador,
+  Variante,
+  Mensaje,
+} = require("../models/index.model");
 const { validationResult } = require("express-validator");
 const fs = require("fs");
 const path = require("path");
-const { Op } = require("sequelize"); // 🔄 NUEVO
+const { Op } = require("sequelize");
 
 // Obtener todos los productos
 const getProductos = async (req, res) => {
   try {
-    const { page = 1, limit = 20, idCategoria, oferta = undefined, nombre, precioMin, precioMax } = req.query; // 🔄 NUEVO
+    const {
+      page = 1,
+      limit = 20,
+      idCategoria,
+      oferta = undefined,
+      nombre,
+      precioMin,
+      precioMax,
+    } = req.query; // 🔄 NUEVO
     const offset = (page - 1) * limit;
 
     const whereClause = {};
     if (idCategoria) whereClause.idCategoria = idCategoria;
     if (oferta !== undefined) whereClause.oferta = oferta === "true";
 
-    // 🔄 NUEVOS FILTROS
     if (nombre) {
       whereClause.nombre = { [Op.like]: `%${nombre}%` };
     }
@@ -59,20 +72,38 @@ const getProducto = async (req, res) => {
     const producto = await Producto.findByPk(id, {
       include: [
         { model: Categoria, as: "categoria", attributes: ["id", "nombre"] },
-        { model: Administrador, as: "administrador", attributes: ["id", "usuario"] },
-        { model: Variante, as: "variantes", attributes: ["id", "nombre", "precio", "stock"] },
-        { model: Mensaje, as: "mensajes", attributes: ["id", "texto"], limit: 10, order: [["id", "DESC"]] },
+        {
+          model: Administrador,
+          as: "administrador",
+          attributes: ["id", "usuario"],
+        },
+        {
+          model: Variante,
+          as: "variantes",
+          attributes: ["id", "nombre", "precio", "stock"],
+        },
+        {
+          model: Mensaje,
+          as: "mensajes",
+          attributes: ["id", "texto"],
+          limit: 10,
+          order: [["id", "DESC"]],
+        },
       ],
     });
 
     if (!producto) {
-      return res.status(404).json({ success: false, error: "Producto no encontrado" });
+      return res
+        .status(404)
+        .json({ success: false, error: "Producto no encontrado" });
     }
 
     res.json({ success: true, data: producto });
   } catch (err) {
     console.error("Error en getProducto:", err);
-    res.status(500).json({ success: false, error: "Error interno del servidor" });
+    res
+      .status(500)
+      .json({ success: false, error: "Error interno del servidor" });
   }
 };
 
@@ -99,7 +130,7 @@ const createProducto = async (req, res) => {
       idCategoria,
     } = req.body;
 
-    const imagenes = req.files ? req.files.map(f => f.filename) : [];
+    const imagenes = req.files ? req.files.map((f) => f.filename) : [];
 
     const nuevoProducto = await Producto.create({
       nombre,
@@ -121,8 +152,8 @@ const createProducto = async (req, res) => {
   } catch (err) {
     console.error("Error en createProducto:", err);
     if (req.files) {
-      req.files.forEach(file => {
-        const filePath = path.join(__dirname, '../uploads', file.filename);
+      req.files.forEach((file) => {
+        const filePath = path.join(__dirname, "../uploads", file.filename);
         if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
       });
     }
@@ -159,13 +190,17 @@ const updateProducto = async (req, res) => {
     const updateData = { ...req.body };
 
     if (req.files && req.files.length > 0) {
-      if (producto.imagenes && Array.isArray(producto.imagenes) && producto.imagenes.length > 0) {
-        producto.imagenes.forEach(img => {
-          const oldImagePath = path.join(__dirname, '../uploads', img);
+      if (
+        producto.imagenes &&
+        Array.isArray(producto.imagenes) &&
+        producto.imagenes.length > 0
+      ) {
+        producto.imagenes.forEach((img) => {
+          const oldImagePath = path.join(__dirname, "../uploads", img);
           if (fs.existsSync(oldImagePath)) fs.unlinkSync(oldImagePath);
         });
       }
-      updateData.imagenes = req.files.map(f => f.filename);
+      updateData.imagenes = req.files.map((f) => f.filename);
     }
 
     await producto.update(updateData);
@@ -178,8 +213,8 @@ const updateProducto = async (req, res) => {
   } catch (err) {
     console.error("Error en updateProducto:", err);
     if (req.files) {
-      req.files.forEach(file => {
-        const filePath = path.join(__dirname, '../uploads', file.filename);
+      req.files.forEach((file) => {
+        const filePath = path.join(__dirname, "../uploads", file.filename);
         if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
       });
     }
@@ -197,10 +232,16 @@ const deleteProducto = async (req, res) => {
     const { id } = req.params;
     const producto = await Producto.findByPk(id);
     if (!producto) {
-      return res.status(404).json({ success: false, error: "Producto no encontrado" });
+      return res
+        .status(404)
+        .json({ success: false, error: "Producto no encontrado" });
     }
 
-    if (producto.imagenes && Array.isArray(producto.imagenes) && producto.imagenes.length > 0) {
+    if (
+      producto.imagenes &&
+      Array.isArray(producto.imagenes) &&
+      producto.imagenes.length > 0
+    ) {
       producto.imagenes.forEach((img) => {
         const imagePath = path.join(__dirname, "../uploads", img);
         if (fs.existsSync(imagePath)) fs.unlinkSync(imagePath);
@@ -212,7 +253,9 @@ const deleteProducto = async (req, res) => {
     res.json({ success: true, message: "Producto eliminado exitosamente" });
   } catch (err) {
     console.error("Error en deleteProducto:", err);
-    res.status(500).json({ success: false, error: "No se pudo eliminar el producto" });
+    res
+      .status(500)
+      .json({ success: false, error: "No se pudo eliminar el producto" });
   }
 };
 
@@ -223,4 +266,3 @@ module.exports = {
   updateProducto,
   deleteProducto,
 };
-

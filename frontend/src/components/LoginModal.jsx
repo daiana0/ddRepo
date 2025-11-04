@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -15,34 +15,34 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Divider
-} from '@mui/material';
-import GoogleIcon from '@mui/icons-material/Google';
-import { useAuth } from '../contexts/Auth.context';
+  Divider,
+} from "@mui/material";
+import GoogleIcon from "@mui/icons-material/Google";
+import { useAuth } from "../contexts/Auth.context";
 
 const LoginModal = ({ open, onClose }) => {
   const [tabValue, setTabValue] = useState(0);
   const [loginData, setLoginData] = useState({
-    email: '',
-    password: '',
-    tipo: 'cliente'
+    email: "",
+    password: "",
+    tipo: "cliente",
   });
   const [registerData, setRegisterData] = useState({
-    nombre: '',
-    email: '',
-    password: '',
-    telefono: ''
+    nombre: "",
+    email: "",
+    password: "",
+    telefono: "",
   });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { login, register, loginWithGoogle } = useAuth();
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
   };
 
   const handleGoogleLogin = () => {
@@ -52,42 +52,46 @@ const LoginModal = ({ open, onClose }) => {
   const handleLoginChange = (e) => {
     setLoginData({
       ...loginData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleRegisterChange = (e) => {
     setRegisterData({
       ...registerData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
-    console.log('Datos de login:', loginData); // Debug
+    console.log("Datos de login:", loginData); // Debug
 
-    const result = await login(loginData.email, loginData.password, loginData.tipo);
-    
+    const result = await login(
+      loginData.email,
+      loginData.password,
+      loginData.tipo
+    );
+
     if (result.success) {
       onClose();
-      // Reset form
-      setLoginData({ email: '', password: '', tipo: 'cliente' });
+
+      setLoginData({ email: "", password: "", tipo: "cliente" });
     } else {
       setError(result.message);
     }
-    
+
     setLoading(false);
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     const result = await register(
       registerData.nombre,
@@ -95,19 +99,19 @@ const LoginModal = ({ open, onClose }) => {
       registerData.password,
       registerData.telefono
     );
-    
+
     if (result.success) {
       setSuccess(result.message);
-      setRegisterData({ nombre: '', email: '', password: '', telefono: '' });
-      // Cambiar a tab de login después de registro exitoso
+      setRegisterData({ nombre: "", email: "", password: "", telefono: "" });
+
       setTimeout(() => {
         setTabValue(0);
-        setSuccess('');
+        setSuccess("");
       }, 2000);
     } else {
       setError(result.message);
     }
-    
+
     setLoading(false);
   };
 
@@ -121,8 +125,16 @@ const LoginModal = ({ open, onClose }) => {
       </DialogTitle>
 
       <DialogContent>
-        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-        {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
+        {success && (
+          <Alert severity="success" sx={{ mb: 2 }}>
+            {success}
+          </Alert>
+        )}
 
         {tabValue === 0 && (
           <Box component="form" onSubmit={handleLogin} sx={{ mt: 1 }}>
@@ -134,13 +146,13 @@ const LoginModal = ({ open, onClose }) => {
               sx={{
                 mb: 2,
                 py: 1.5,
-                textTransform: 'none',
-                borderColor: '#dadce0',
-                color: '#3c4043',
-                '&:hover': {
-                  borderColor: '#dadce0',
-                  backgroundColor: '#f8f9fa',
-                }
+                textTransform: "none",
+                borderColor: "#dadce0",
+                color: "#3c4043",
+                "&:hover": {
+                  borderColor: "#dadce0",
+                  backgroundColor: "#f8f9fa",
+                },
               }}
             >
               Continuar con Google
@@ -244,7 +256,11 @@ const LoginModal = ({ open, onClose }) => {
           variant="contained"
           disabled={loading}
         >
-          {loading ? 'Cargando...' : (tabValue === 0 ? 'Iniciar Sesión' : 'Registrarse')}
+          {loading
+            ? "Cargando..."
+            : tabValue === 0
+            ? "Iniciar Sesión"
+            : "Registrarse"}
         </Button>
       </DialogActions>
     </Dialog>

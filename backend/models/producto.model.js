@@ -33,9 +33,9 @@ const Producto = sequelize.define(
       allowNull: true,
       defaultValue: [],
       get() {
-        const rawValue = this.getDataValue('imagenes');
+        const rawValue = this.getDataValue("imagenes");
         // Si es string, parsearlo
-        if (typeof rawValue === 'string') {
+        if (typeof rawValue === "string") {
           try {
             return JSON.parse(rawValue);
           } catch (e) {
@@ -52,17 +52,17 @@ const Producto = sequelize.define(
       set(value) {
         // Asegurar que siempre se guarde como array
         if (Array.isArray(value)) {
-          this.setDataValue('imagenes', value);
-        } else if (typeof value === 'string') {
+          this.setDataValue("imagenes", value);
+        } else if (typeof value === "string") {
           try {
-            this.setDataValue('imagenes', JSON.parse(value));
+            this.setDataValue("imagenes", JSON.parse(value));
           } catch (e) {
-            this.setDataValue('imagenes', []);
+            this.setDataValue("imagenes", []);
           }
         } else {
-          this.setDataValue('imagenes', []);
+          this.setDataValue("imagenes", []);
         }
-      }
+      },
     },
     oferta: {
       type: DataTypes.BOOLEAN,

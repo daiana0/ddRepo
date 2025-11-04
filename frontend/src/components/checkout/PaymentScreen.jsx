@@ -1,4 +1,4 @@
-// src/components/checkout/PaymentScreen.jsx
+
 import { useState } from 'react';
 import {
   Box,

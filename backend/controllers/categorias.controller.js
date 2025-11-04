@@ -2,9 +2,7 @@ const { Categoria, Producto } = require("../models/index.model");
 const { validationResult } = require("express-validator");
 const { Op } = require("sequelize");
 
-// ============================
 // Obtener todas las categorías
-// ============================
 const getCategorias = async (req, res) => {
   try {
     console.log("GET /categorias");
@@ -28,7 +26,6 @@ const getCategorias = async (req, res) => {
     console.log("****");
     console.log("parametros: ", page, limit, activo, search, sort, direction);
 
-    // Construir whereClause
     const whereClause = {};
     if (activo === "true") whereClause.activa = true;
     if (activo === "false") whereClause.activa = false;
@@ -67,9 +64,8 @@ const getCategorias = async (req, res) => {
   }
 };
 
-// ============================
 // Obtener una categoría por ID
-// ============================
+
 const getCategoria = async (req, res) => {
   try {
     const { id } = req.params;
@@ -100,9 +96,8 @@ const getCategoria = async (req, res) => {
   }
 };
 
-// ===================================
 // Obtener productos por categoría
-// ===================================
+
 const getProductosByCategoria = async (req, res) => {
   try {
     let { page = 1, limit = 10, activo = "all", search = "" } = req.query;
@@ -117,7 +112,9 @@ const getProductosByCategoria = async (req, res) => {
 
     const categoria = await Categoria.findByPk(id);
     if (!categoria) {
-      return res.status(404).json({ success: false, error: "Categoría no encontrada" });
+      return res
+        .status(404)
+        .json({ success: false, error: "Categoría no encontrada" });
     }
 
     const whereClause = { idCategoria: id }; // tu columna en Producto
@@ -164,7 +161,13 @@ const createCategoria = async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ success: false, error: "Datos inválidos", details: errors.array() });
+      return res
+        .status(400)
+        .json({
+          success: false,
+          error: "Datos inválidos",
+          details: errors.array(),
+        });
     }
 
     const { nombre, descripcion, activa } = req.body;
@@ -177,10 +180,18 @@ const createCategoria = async (req, res) => {
       imagenUrl,
     });
 
-    res.status(201).json({ success: true, data: nuevaCategoria, message: "Categoría creada exitosamente" });
+    res
+      .status(201)
+      .json({
+        success: true,
+        data: nuevaCategoria,
+        message: "Categoría creada exitosamente",
+      });
   } catch (err) {
     console.error("Error en createCategoria:", err);
-    res.status(500).json({ success: false, error: "Error interno del servidor" });
+    res
+      .status(500)
+      .json({ success: false, error: "Error interno del servidor" });
   }
 };
 
@@ -191,41 +202,62 @@ const updateCategoria = async (req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ success: false, error: "Datos inválidos", details: errors.array() });
+      return res
+        .status(400)
+        .json({
+          success: false,
+          error: "Datos inválidos",
+          details: errors.array(),
+        });
     }
 
     const categoria = await Categoria.findByPk(id);
     if (!categoria) {
-      return res.status(404).json({ success: false, error: "Categoría no encontrada" });
+      return res
+        .status(404)
+        .json({ success: false, error: "Categoría no encontrada" });
     }
 
     // Crear un objeto con los datos que sí existen en req.body
     const datosActualizar = {};
     if (req.body.nombre) datosActualizar.nombre = req.body.nombre;
-    if (req.body.descripcion) datosActualizar.descripcion = req.body.descripcion;
-    if (req.body.activa !== undefined) datosActualizar.activa = req.body.activa === 'true' || req.body.activa === true;
+    if (req.body.descripcion)
+      datosActualizar.descripcion = req.body.descripcion;
+    if (req.body.activa !== undefined)
+      datosActualizar.activa =
+        req.body.activa === "true" || req.body.activa === true;
     if (req.file) datosActualizar.imagenUrl = req.file.filename;
 
     await categoria.update(datosActualizar);
 
-    res.json({ success: true, data: categoria, message: "Categoría actualizada exitosamente" });
+    res.json({
+      success: true,
+      data: categoria,
+      message: "Categoría actualizada exitosamente",
+    });
   } catch (err) {
     console.error("Error en updateCategoria:", err);
-    res.status(500).json({ success: false, error: "Error interno", message: "No se pudo actualizar la categoría" });
+    res
+      .status(500)
+      .json({
+        success: false,
+        error: "Error interno",
+        message: "No se pudo actualizar la categoría",
+      });
   }
 };
 
+// Eliminar categoría
 
-// ============================
-// Eliminar categoría (borrado lógico)
-// ============================
 const deleteCategoria = async (req, res) => {
   try {
     const { id } = req.params;
     const categoria = await Categoria.findByPk(id);
 
     if (!categoria) {
-      return res.status(404).json({ success: false, error: "Categoría no encontrada" });
+      return res
+        .status(404)
+        .json({ success: false, error: "Categoría no encontrada" });
     }
 
     await categoria.update({ activa: false });

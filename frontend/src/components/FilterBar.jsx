@@ -30,7 +30,7 @@ const FilterBar = () => {
     px: 2,
   }}
 >
-  {/* Botones visibles en pantallas medianas en adelante */}
+ 
   <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 3 }}>
     {menuItems.map((item, i) => (
       <Button
@@ -50,7 +50,7 @@ const FilterBar = () => {
     ))}
   </Box>
 
-  {/* Menú hamburguesa en XS */}
+
   <Box sx={{ display: { xs: "flex", sm: "none" } }}>
     <IconButton color="inherit" onClick={handleMenuOpen}>
       <MenuIcon />
